@@ -1,7 +1,7 @@
 const pg = require('../database')
 const errors = require('../errors/errors')
 const errorHandler = require('../errors/error-handler')
-
+const QueryBuilder = require('../libs/query-builder')
 
 function withoutPrivate (privateProps, data, force = []) {
     if(!Array.isArray(privateProps))
@@ -57,7 +57,7 @@ ActiveRecord.prototype.all = async function () {
  * @returns null
  */
 ActiveRecord.prototype.find = async function (id) {
-    return await pg.connect()
+    return await this.connect()
         .then(async client => {
             try {
                 const data = await client.query(`SELECT * FROM ${this.table} WHERE id = $1`, [id])
@@ -93,7 +93,7 @@ ActiveRecord.prototype.save = async function (data) {
     const query = `INSERT INTO ${this.table} (${fields.join(',')}) VALUES (${stmt.join(',')}) RETURNING *`
     console.log(query)
 
-    return await pg.connect()
+    return await this.connect()
         .then(async client => {
             try {
                 const data = await client.query(query, values)
@@ -127,7 +127,7 @@ ActiveRecord.prototype.update = async function (id, data) {
 
     const query = `UPDATE ${this.table} SET ${stmt.join(', ')}, updatedAt = NOW() WHERE id = $${Number(values.length + 1)} RETURNING *`
     console.log(query)
-    return await pg.connect()
+    return await this.connect()
         .then(async client => {
             try {
                 const data = await client.query(query, [...values, id])
@@ -144,27 +144,16 @@ ActiveRecord.prototype.update = async function (id, data) {
         })
 }
 
+ActiveRecord.prototype.where = function (field, operatorOrValue, value) {
+    const qb = new QueryBuilder(this.connect())
+    return qb.from(this.table).where(field, operatorOrValue, value)
+}
+
 
 const test = async () => {
     const product = new ActiveRecord('Products')
-
     try {
-        // const saved = await product.save({
-        //     id: 548923,
-        //     code: '40028923',
-        //     name: 'Panelas'
-        // })
-        
-        const oneProduct = await product.find(1)
-        const allProducts = await product.all()
-        // const update = await product.update(2, {
-        //     name: 'Vestidos p/ Crianças'
-        // })*/
-
-        // console.log("saved", saved)
-        console.log("found", oneProduct)
-        console.log("all", allProducts)
-        // console.log("updated", update)
+        console.log(await product.where('createdAt', '<=', '2019-09-16 00:26:00').get())
     } catch (e) {
         console.log(e)
     }
