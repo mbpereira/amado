@@ -1,8 +1,8 @@
-const ActiveRecord = require('../models/active-record').ActiveRecord
+const ActiveRecord = require('../models/active-record')
 
 async function index (req, res, next) {
     
-    const product = new ActiveRecord('Products')
+    const product = ActiveRecord('Products')
     const category = req.query.idCategory
 
     try {
@@ -10,7 +10,7 @@ async function index (req, res, next) {
         if(!!category) {
             products = await product.where('idCategory', category).get()
         } else {
-            products = await product.all()
+            products = await product.get()
         }
 
         res.status(200).send(products)

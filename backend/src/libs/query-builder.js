@@ -1,4 +1,8 @@
 
+const privates = [
+    'pass'
+]
+
 const validOperators = [
     '=',
     '!=',
@@ -11,6 +15,27 @@ const validOperators = [
     'not between'
 ]
 
+function withoutPrivate (data, force = []) {
+    if(!Array.isArray(data)) {
+
+        privates.map(private => {
+            if(data.hasOwnProperty(private) && force.indexOf(private) === -1)
+                delete data[private]
+        })
+
+        return data
+    }
+
+    data.map(current => {
+        privates.map(private => {
+            if(current.hasOwnProperty(private) && force.indexOf(private))
+                delete current[private]
+        })
+    })
+
+    return data
+    
+}
 function contains (str, value) {
     return str.indexOf(value) !== -1
 }
@@ -45,8 +70,8 @@ async function exec (query) {
         .then(async client => {
             try {
                 console.log(query)
-                console.log(self.values)
                 const data = await client.query(query, self.values)
+                console.log("Retornado", data.rows)
                 return data.rows
             } finally {
                 client.release()
@@ -54,10 +79,10 @@ async function exec (query) {
         })   
 }
 
-function QueryBuilder (connect) {
+function QueryBuilder (connect, table = '') {
     this.connect = connect
+    this.table = table
     this.fields = '*'
-    this.table = ''
     this.query = ''
     this.values = []
     this.limit = 250
@@ -72,7 +97,6 @@ QueryBuilder.prototype.from = function (table) {
     return this
 }
 QueryBuilder.prototype.where = function (field, operatorOrValue, value) {
-
     // verifica se o builder já foi inicializado
     if(contains(this.query, 'WHERE')) {
         this.query += 'AND '
@@ -103,8 +127,17 @@ QueryBuilder.prototype.orWhere = function (field, operatorOrValue, value) {
 
     return mount.apply(this, [field, operatorOrValue, value])
 }
+QueryBuilder.prototype.find = async function (id) {
+    if(!!this.primaryKey)
+        this.where(this.primaryKey, id)
+    else
+        this.where('id', id)
+    
+    const data = await this.get()
 
-QueryBuilder.prototype.get = async function () {
+    return data[0]
+}
+QueryBuilder.prototype.get = async function (options) {
     if(!this.table)
         throw "Tabela nao definida"
 
@@ -116,12 +149,20 @@ QueryBuilder.prototype.get = async function () {
         query += this.fields + ' '
     }
 
-    query += `FROM ${this.table} ${this.query} `
+    query += `FROM ${this.table} `
+    if(!!this.query)
+        query += `${this.query} `
 
     if(!isNaN(Number(this.offset)))
         query += `OFFSET ${this.offset}`
 
-    return await exec.apply(this, [query])
+    const data = await exec.apply(this, [query])
+
+    if(!options)
+        return withoutPrivate(data)
+
+    return withoutPrivate(data, options.force || [])
+
 }
 QueryBuilder.prototype.skip = function (n) {
 
@@ -134,8 +175,16 @@ QueryBuilder.prototype.skip = function (n) {
     return this
 }
 QueryBuilder.prototype.insert = function (data) {
+
     this.fields = Object.keys(data)
     this.values = Object.values(data)
+
+    if(!this.table)
+        return this
+
+    const stmt = this.fields.map((field, index) => `$${Number(index + 1)}`)
+
+    this.query = `INSERT INTO ${this.table} (${this.fields.join(', ')}) VALUES (${stmt.join(', ')}) `
     return this
 }
 QueryBuilder.prototype.into = function (table) {
@@ -155,7 +204,7 @@ QueryBuilder.prototype.into = function (table) {
 }
 
 
-QueryBuilder.prototype.update = function (table, data) {
+QueryBuilder.prototype.update = function (data, table) {
     const fields = Object.keys(data)
     const values = Object.values(data)
     this.values.push(...values)
@@ -164,7 +213,12 @@ QueryBuilder.prototype.update = function (table, data) {
         return `${field} = $${Number(index + 1)}`
     })
 
-    this.query = `UPDATE ${table} SET ${stmt.join(', ')} `
+    if(!table && !this.table)
+        throw "Tabela nao definida"
+    
+    const tbl = (!table) ? this.table : table
+
+    this.query = `UPDATE ${tbl} SET ${stmt.join(', ')} `
 
     return this
 }
@@ -173,20 +227,21 @@ QueryBuilder.prototype.send = async function () {
     if(!contains(this.query, 'INSERT') && !contains(this.query, 'UPDATE'))
         throw "Query mal construida"
 
-    return exec.apply(this, [this.query + 'RETURNING *'])
+    const data = await exec.apply(this, [this.query + 'RETURNING *'])
+
+    return withoutPrivate(data)
 }
 
 const test = async (instance) => {
     const QB = new QueryBuilder(instance)
 
     try {
-        const inserted = await QB.from("Products").skip(4).get()
+        const inserted = await QB.from("Products").find(2)
         console.log(inserted)
     } catch (e) {
         console.log(e)
     }
 }
 
-module.exports = test
-//module.exports = QueryBuilder
+module.exports = QueryBuilder
 
