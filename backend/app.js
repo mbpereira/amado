@@ -1,2 +1,7 @@
 require('dotenv/config')
-require('./src/server')
+const pg = require('./src/database')
+//require('./src/server')
+const test = require('./src/libs/query-builder')
+
+
+test(pg.connect())
