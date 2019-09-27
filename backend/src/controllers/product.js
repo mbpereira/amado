@@ -1,28 +1,24 @@
 const ActiveRecord = require('../models/active-record')
 
-async function index (req, res, next) {
+const index = (req, res, next) => {
     
-    const product = ActiveRecord('Products')
+    const product = new ActiveRecord('products')
     const category = req.query.idCategory
 
-    try {
-        let products = null
-        if(!!category) {
-            products = await product.where('idCategory', category).get()
-        } else {
-            products = await product.get()
-        }
+    // se o parametro categoria for fornecido, busca produtos através deles
+    if(!category)
+        return product.get(q => q.where('idcategory', category))
+            .then(products => res.status(200).send(products))
+            .catch(next)
 
-        res.status(200).send(products)
-
-    } catch (e) {
-        next(e)
-    }
+    product.all()
+        .then(products => res.send(200).send(products))
+        .catch(next)
     
 }
 
-async function find (req, res, next) {
-
+const find = (req, res, next) => {
+    
 }
 
 module.exports = {

@@ -1,18 +1,15 @@
 const express = require('express') 
-const authorization = require('../controllers/middlewares/authorization')
-const CustomerController = require('../controllers/customer/profile')
+const { Middlewares } = require('../controllers')
+const { Customer } = require('../controllers')
 
 const router = express.Router()
 
 // verifica se o token é valido
-router.use(authorization)
-
+router.use(Middlewares.Authorization)
 
 router.route('/api/customer/:id')
-    .get(CustomerController.find)
-    .put(CustomerController.update)
-    .delete(CustomerController.destroy)
-
-
+    .get(Customer.find)
+    .put(Customer.update)
+    .delete(Customer.destroy)
 
 module.exports = router
