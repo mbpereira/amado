@@ -6,7 +6,6 @@ const path = require('path')
 // ================================
 // ROUTES
 // ================================
-const auth = require('./routes/auth')
 const private = require('./routes/private')
 const public = require('./routes/public')
 
@@ -25,7 +24,6 @@ app.use(bodyParser.urlencoded({
 app.use(bodyParser.json())
 
 
-app.use(auth)
 app.use(public)
 app.use(private)
 
@@ -33,11 +31,15 @@ app.use(private)
 
 //errorHandler
 app.use((err, req, res, next) => {
+    
+    console.error(err)
+
     const parsed = Handler(err)
     
     console.error(parsed)
 
     parsed.stack = undefined
+
     res.status(parsed.code).send(parsed)
 })
 

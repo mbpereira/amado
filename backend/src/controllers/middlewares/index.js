@@ -1,3 +1,4 @@
 module.exports = {
-    Authorization: require('./authorization')
+    Authorization: require('./authorization'),
+    IsAdmin: require('./is-admin')
 }

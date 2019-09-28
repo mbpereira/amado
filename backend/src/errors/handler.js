@@ -22,5 +22,7 @@ module.exports = function (e) {
                 return errors.GeneralError("Ocorreu um erro", e.detail)
         }
     }
+
+    return errors.GeneralError("Erro ao processar requisição")
 }
 

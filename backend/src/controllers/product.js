@@ -1,27 +1,26 @@
-const ActiveRecord = require('../models/active-record')
+const { Product } = require('../models')
 
-const index = (req, res, next) => {
-    
-    const product = new ActiveRecord('products')
-    const category = req.query.idCategory
+class ProductController {
+    static index (req, res, next) {
 
-    // se o parametro categoria for fornecido, busca produtos através deles
-    if(!category)
-        return product.get(q => q.where('idcategory', category))
+        const category = req.query.idCategory
+
+
+        // se o parametro categoria for fornecido, busca produtos através deles
+        if(!!category)
+            return Product.query().where('idcategory', category)
+                .then(products => res.status(200).send(products))
+                .catch(next)
+
+        Product.query()
             .then(products => res.status(200).send(products))
             .catch(next)
+        
+    }
 
-    product.all()
-        .then(products => res.send(200).send(products))
-        .catch(next)
-    
+    static show (req, res, next) {
+        
+    }
 }
 
-const find = (req, res, next) => {
-    
-}
-
-module.exports = {
-    index,
-    find
-}
+module.exports = ProductController

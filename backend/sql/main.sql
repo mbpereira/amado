@@ -30,6 +30,17 @@ CREATE TABLE Sku (
 );
 ALTER TABLE Sku ADD CONSTRAINT Sku_idProduct_fkey FOREIGN KEY (idProduct) REFERENCES Products (id);
 
+CREATE TABLE SkuStock (
+    id SERIAL NOT NULL,
+    idSku INT NOT NULL,
+    cost DECIMAL NOT NULL,
+    price DECIMAL NOT NULL,
+    createdAt TIMESTAMP DEFAULT NOW(),
+    updatedAt TIMESTAMP,
+    PRIMARY KEY (id)
+)
+ALTER TALBE SkuStock ADD CONSTRAINT SkuStock_idSku_fkey FOREIGN KEY (idSku) REFERENCES Sku (id);
+
 CREATE TABLE SkuImages (
     id SERIAL,
     idSku INTEGER NOT NULL,
