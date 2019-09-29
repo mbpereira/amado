@@ -85,6 +85,14 @@ class AuthController {
 
 
     }
+
+    static logout (req, res, next) {
+
+    }
+
+    static unsubscribe (req, res, next) {
+        
+    }
 }
 
 module.exports = AuthController

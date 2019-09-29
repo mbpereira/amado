@@ -2,19 +2,16 @@ const { Customer } = require('../models')
 const { Errors: errors } = require('../errors')
 
 class CustomerController {
-    static show (req, res, next) {
+
+    static showMe (req, res, next) {
 
         // id recebido através de tradução do token
-        const idOfToken = Number(req.userId)
-        const userId = Number(req.params.id)
+        const id = Number(req.userId)
 
-        if(!userId)
+        if(!id)
             throw errors.BadRequest('O parametro id deve ser informado')
-        if(idOfToken !== userId)
-            throw errors.Unauthorized('Você nao tem permissão para ver esse usuário')
 
-
-        Customer.query().findById(userId)
+        Customer.query().findById(id)
             .then(user => {
                 delete user.pass
                 res.status(200).send(user)
@@ -22,21 +19,17 @@ class CustomerController {
             .catch(next)
                 
     }
-    static update (req, res, next) {
+
+    static updateMe (req, res, next) {
 
 
-        const userId = Number(req.params.id)
         // id recebido através de tradução do token
-        const idOfToken = Number(req.userId)
-        const { body: data } = req
+        const id = Number(req.userId)
 
-        if(!userId)
+        if(!id)
             throw errors.BadRequest('O parametro id é obrigatório')
 
-        if(userId !== idOfToken)
-            throw errors.BadRequest('Você não tem permissão para alterar esse usuário')
-
-        Customer.query().findById(userId).patch(data).returning('*')
+        Customer.query().findById(id).patch(req.body).returning('*')
             .then(updated => {
                 console.log(updated)
 

@@ -16,9 +16,11 @@ router.get('/api/categories/:id', Category.show)
 
 
 // CUSTOMER ROUTES
-router.get('/api/customers/:id', Middlewares.Authorization, Customer.show)
-router.put('/api/customers/:id', Middlewares.Authorization, Customer.update)
-router.delete('/api/customers/:id', Middlewares.Authorization, Customer.destroy)
+router.post('/logout', Middlewares.Authorization, Auth.logout)
+router.delete('/unsubscribe', Middlewares.Authorization, Auth.unsubscribe)
+
+router.get('/api/me', Middlewares.Authorization, Customer.showMe)
+router.patch('/api/me', Middlewares.Authorization, Customer.updateMe)
 
 
 
@@ -30,7 +32,7 @@ const adminSteps = [
 ]
 router.post('/admin/login', Auth.adminLogin)
 router.post('/api/categories', adminSteps, Category.store)
-router.put('/api/categories/:id', adminSteps, Category.update)
+router.patch('/api/categories/:id', adminSteps, Category.update)
 
 
 module.exports = router
