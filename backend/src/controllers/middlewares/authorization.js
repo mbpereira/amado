@@ -15,7 +15,6 @@ const verify = (req, res, next) => {
 
             if(err) throw errors.Unauthorized("Token inválido")
 
-            console.log(decoded)
             req.userId = decoded.id
             req.isAdmin = decoded.isAdmin
             

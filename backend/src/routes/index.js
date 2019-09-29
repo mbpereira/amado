@@ -1,5 +1,5 @@
 const express = require('express') 
-const { Middlewares, Admin, Customer, Product, Category, Auth } = require('../controllers')
+const { Middlewares, Customer, Product, Category, Auth } = require('../controllers')
 
 const router = express.Router()
 
@@ -28,13 +28,9 @@ const adminSteps = [
     Middlewares.Authorization,
     Middlewares.IsAdmin
 ]
-router.post('/admin/login', Admin.Auth.login)
-router.post('/api/categories', adminSteps, Admin.Category.store)
-router.put('/api/categories/:id', adminSteps, Admin.Category.update)
+router.post('/admin/login', Auth.adminLogin)
+router.post('/api/categories', adminSteps, Category.store)
+router.put('/api/categories/:id', adminSteps, Category.update)
 
-
-
-
-// router.get('/api/categories', () => {})
 
 module.exports = router

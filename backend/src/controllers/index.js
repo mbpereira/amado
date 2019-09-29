@@ -5,5 +5,4 @@ module.exports = {
     Sku: require('./sku'),
     Product: require('./product'),
     Middlewares: require('./middlewares'),
-    Admin: require('./admin')
 }
