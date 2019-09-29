@@ -5,6 +5,11 @@ function HttpError (name, message, code, detail) {
     this.stack = (new Error()).stack
     this.detail = detail
 }
+HttpError.prototype.parse = function () {
+    const self = Object.assign({}, this)
+    self.stack = undefined
+    return self
+}
 function Conflict (message, detail = "") {
     return new HttpError('Conflict', message || 'Não é possível inserir um registro já existente', 409, detail)
 }

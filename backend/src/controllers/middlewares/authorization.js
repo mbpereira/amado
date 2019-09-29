@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken')
-const { Errors: errors, Handler } = require('../../errors')
+const { Errors: errors, Handler: getHttpError } = require('../../errors')
 
 
 const verify = (req, res, next) => {
@@ -15,6 +15,7 @@ const verify = (req, res, next) => {
 
             if(err) throw errors.Unauthorized("Token inválido")
 
+            console.log(decoded)
             req.userId = decoded.id
             req.isAdmin = decoded.isAdmin
             
@@ -23,9 +24,8 @@ const verify = (req, res, next) => {
         })
 
     } catch (e) {
-        const parsed = Handler(e)
-        parsed.stack = undefined
-        res.status(parsed.code).send(parsed)
+        const httpError = getHttpError(e)
+        res.status(httpError.code).send(httpError.parse())
     }
 }
 

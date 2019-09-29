@@ -1,14 +1,12 @@
 const express = require('express')
 const bodyParser = require('body-parser')
-const { Errors, Handler } = require('./errors')
+const { Errors, Handler: getHttpError } = require('./errors')
 const path = require('path')
 
 // ================================
 // ROUTES
 // ================================
-const private = require('./routes/private')
-const public = require('./routes/public')
-
+const routes = require('./routes')
 
 const app = express()
 
@@ -24,8 +22,8 @@ app.use(bodyParser.urlencoded({
 app.use(bodyParser.json())
 
 
-app.use(public)
-app.use(private)
+
+app.use('/', routes)
 
 
 
@@ -34,13 +32,11 @@ app.use((err, req, res, next) => {
     
     console.error(err)
 
-    const parsed = Handler(err)
+    const httpError = getHttpError(err)
     
-    console.error(parsed)
+    console.error(httpError)
 
-    parsed.stack = undefined
-
-    res.status(parsed.code).send(parsed)
+    res.status(httpError.code).send(httpError.parse())
 })
 
 

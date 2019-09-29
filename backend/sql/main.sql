@@ -1,3 +1,15 @@
+CREATE TABLE Users (
+    id SERIAL,
+    username VARCHAR(100) NOT NULL UNIQUE
+    email VARCHAR(100) UNIQUE,
+    pass VARCHAR(100) NOT NULL,
+    phone VARCHAR(100) NOT NULL,
+    name VARCHAR (100) NOT NULL,
+    createdAt TIMESTAMP DEFAULT NOW(),
+    updatedAt TIMESTAMP,
+    PRIMARY KEY (id)
+);
+
 CREATE TABLE Categories (
     id SERIAL,
     name VARCHAR(50) NOT NULL,

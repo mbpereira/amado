@@ -9,4 +9,5 @@ module.exports = {
     SkuImage: require('./sku-image'),
     Order: require('./order'),
     OrderItem: require('./order-item'),
+    User: require('./user')
 }

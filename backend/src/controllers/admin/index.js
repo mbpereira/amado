@@ -4,5 +4,6 @@ module.exports = {
     Product: require('./product'),
     Sku: require('./sku'),
     SkuStock: require('./sku-stock'),
-    SkuImage: require('./sku-image')
+    SkuImage: require('./sku-image'),
+    Auth: require('./auth')
 }

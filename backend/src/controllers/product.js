@@ -3,7 +3,7 @@ const { Product } = require('../models')
 class ProductController {
     static index (req, res, next) {
 
-        const category = req.query.idCategory
+        const category = req.query.idcategory
 
 
         // se o parametro categoria for fornecido, busca produtos através deles
