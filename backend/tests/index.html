@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+    <head></head>
+    <body>
+
+        <form id="form" enctype="multipart/form-data" method="POST" action="http://localhost:3000/api/sku-images">
+            <input type="file" name="images" multiple>
+            <input type="hidden" value="6" name="idsku">
+            <input type="submit">
+        </form>
+
+        <script>
+
+            var token = null;
+            var base = 'http://localhost:3000';
+
+
+            function init () {
+
+                var credentials = {
+                    username: 'admin',
+                    pass: '123456'
+                };
+
+                var xhr = new XMLHttpRequest();
+
+                xhr.addEventListener('load', function (res) {
+                    token = JSON.parse(xhr.responseText).token;
+                    after()
+                });
+
+                xhr.open('POST', base+'/admin/login');
+                xhr.setRequestHeader('Content-Type', 'application/json')
+                xhr.send(JSON.stringify(credentials));
+                
+            }
+
+            function after () {
+
+                var form = document.querySelector('#form');
+
+
+
+                form.addEventListener('submit', function (e) {
+                    e.preventDefault();
+
+                    var xhr = new XMLHttpRequest();
+
+
+                    xhr.addEventListener('load', function () {
+                        console.log(xhr.responseText);
+                    });
+
+
+                    xhr.open('POST', base + '/api/sku-images');
+                    xhr.setRequestHeader('x-access-token', token);
+
+                    var formData = new FormData(form);
+                    xhr.send(formData);
+
+                })
+
+
+
+
+            }
+
+            init();
+            
+            
+        </script>
+    </body>
+
+</html>

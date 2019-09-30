@@ -14,7 +14,14 @@ const app = express()
 // ================================
 // MIDDLEWARES
 // ================================
-app.use(express.static(path.join(__dirname, 'static', 'images')))
+
+// app.use(function(req, res, next) {
+//     res.header("Access-Control-Allow-Origin", "*");
+//     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, x-access-token");
+//     next();
+// });
+
+app.use('/images', express.static(path.join(__dirname, 'static', 'images')))
 
 app.use(bodyParser.urlencoded({
     extended: true

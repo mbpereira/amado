@@ -1,4 +1,5 @@
 module.exports = {
-    Authorization: require('./authorization'),
-    IsAdmin: require('./is-admin')
+    authorization: require('./authorization'),
+    isAdmin: require('./is-admin'),
+    multiparty: require('./multiparty')
 }
