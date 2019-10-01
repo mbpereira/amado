@@ -1,5 +1,6 @@
 const errors = require('./errors')
 
+Error
 module.exports = function (e) {
 
     if(e instanceof errors.HttpError)
@@ -23,6 +24,6 @@ module.exports = function (e) {
         }
     }
 
-    return errors.GeneralError("Erro ao processar requisição")
+    return errors.GeneralError("Erro ao processar requisição", e.message)
 }
 

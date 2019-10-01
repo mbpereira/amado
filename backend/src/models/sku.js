@@ -1,6 +1,7 @@
 const Model = require('./model')
 const Product = require('./product')
 const SkuImage = require('./sku-image')
+const SkuStock = require('./sku-stock')
 
 class Sku extends Model {
 
@@ -24,6 +25,14 @@ class Sku extends Model {
                 join: {
                     from: 'sku.id',
                     to: 'skuimages.idsku'
+                }
+            },
+            stock: {
+                relation: Model.HasManyRelation,
+                modelClass: SkuStock,
+                join: {
+                    from: 'sku.id',
+                    to: 'skustock.idsku'
                 }
             }
         }

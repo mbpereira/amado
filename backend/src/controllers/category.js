@@ -15,11 +15,21 @@ class CategoryController {
     }
 
     static show (req, res, next) {
-        
+        Category.query().findById(req.params.id)
+            .then(category => {
+
+                if(_.isEmpty(category))
+                    throw Errors.NotFound("Categoria nao econtrada")
+
+                res.status(200).send(category)
+
+            })
+            .catch(next)
     }
 
     static store (req, res, next) {
-        Category.query().insert(req.body).returning('*')
+        Category.query().insert(req.body)
+            .returning('*')
             .then(r => res.status(201).send(r))
             .catch(next)
     }

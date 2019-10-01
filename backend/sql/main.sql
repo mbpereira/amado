@@ -58,7 +58,7 @@ CREATE TABLE SkuImages (
     id SERIAL,
     idSku INTEGER NOT NULL,
     src VARCHAR(255),
-    name VARCHAR(255),
+    name VARCHAR(255) NOT NULL UNIQUE,
     link VARCHAR(255),
     createdAt TIMESTAMP DEFAULT NOW(),
     updatedAt TIMESTAMP,

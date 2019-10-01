@@ -1,5 +1,5 @@
 const Model = require('./model')
-
+const Sku = require('./sku')
 class SkuStock extends Model {
 
     static get tableName () {
