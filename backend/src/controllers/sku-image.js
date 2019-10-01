@@ -7,35 +7,48 @@ const { SkuImage } = require('../models')
 const imagePath = 'images/sku'
 const resolvedImagePath = path.resolve('src', 'static', imagePath)
 
+
+const rm = (file) => new Promise((resolve, reject) => {
+    fs.unlink(file, (err) => {
+
+        if(err) return reject(errors.GeneralError("Ocorreu um erro ao tentar salvar imagem"))
+
+        resolve()
+        
+    })
+})
+
+const cp = (from, to) => new Promise((resolve, reject) => {
+
+    fs.copyFile(from, to, (err) => {
+
+        if(err) return reject(errors.GeneralError("Erro ao salvar imagem", err.message))
+
+        resolve()
+
+    })
+
+})
+
+const createDirIfNeed = (skuId) => {
+
+}
+
+
 const save = (skuId, file) => {
 
     const oldpath = file.path
     const newpath = path.join(resolvedImagePath, skuId.toString(), file.name)
 
-    return new Promise((resolve, reject) => {
-
-        fs.copyFile(oldpath, newpath, (err) => {
-
-            if(err) return reject(errors.GeneralError("Erro ao salvar imagem", err.message))
-
-            fs.unlink(oldpath, (err) => {
-
-                if(err) return reject(errors.GeneralError("Ocorreu um erro ao tentar salvar imagem"))
-
-                resolve({ 
-                    idsku: skuId, 
-                    link: `/${imagePath}/${skuId}/${file.name}`, 
-                    src: `/static/${imagePath}/${skuId}/${file.name}`, 
-                    name: file.name
-                })
-                
-            })
-
-
-
-        })
-    })
-
+    return cp(oldpath, newpath)
+        .then(() => rm(oldpath))
+        .then(() => ({ 
+            idsku: skuId, 
+            link: `/${imagePath}/${skuId}/${file.name}`, 
+            src: `/static/${imagePath}/${skuId}/${file.name}`, 
+            name: file.name
+        }))
+        
 }
 const saveImagesToSkuDir = (skuId, files) => {
 

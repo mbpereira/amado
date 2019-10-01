@@ -64,6 +64,10 @@ class AuthController {
         User.query().where('username', req.body.username).first()
             .then(async user => {
 
+                console.log(user)
+
+                if(!user)
+                    throw Errors.NotFound("Usuario nao econtrado")
 
                 if(!await bcrypt.compare(req.body.pass, user.pass))
                     throw Errors.Unauthorized("Senha invalida")

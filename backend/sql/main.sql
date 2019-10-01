@@ -1,6 +1,6 @@
 CREATE TABLE Users (
     id SERIAL,
-    username VARCHAR(100) NOT NULL UNIQUE
+    username VARCHAR(100) NOT NULL UNIQUE,
     email VARCHAR(100) UNIQUE,
     pass VARCHAR(100) NOT NULL,
     phone VARCHAR(100) NOT NULL,
@@ -29,13 +29,13 @@ CREATE TABLE Products (
     PRIMARY KEY (id)
 );
 ALTER TABLE Products ADD CONSTRAINT Products_idCategory_fkey FOREIGN KEY (idCategory) REFERENCES Categories (id);
+ALTER TABLE Products ADD CONSTRAINT Products_code_unique UNIQUE (code);
 
 CREATE TABLE Sku (
     id SERIAL,
     idProduct INTEGER NOT NULL,
-    inStock INTEGER NOT NULL,
-    saleValue REAL NOT NULL,
-    costValue REAL NOT NULL,
+    type VARCHAR(100) NOT NULL,
+    value VARCHAR(100) NOT NULL,
     createdAt TIMESTAMP DEFAULT NOW(),
     updatedAt TIMESTAMP,
     PRIMARY KEY (id)
@@ -47,24 +47,24 @@ CREATE TABLE SkuStock (
     idSku INT NOT NULL,
     cost DECIMAL NOT NULL,
     price DECIMAL NOT NULL,
+    stock DECIMAL NOT NULL,
     createdAt TIMESTAMP DEFAULT NOW(),
     updatedAt TIMESTAMP,
     PRIMARY KEY (id)
-)
-ALTER TALBE SkuStock ADD CONSTRAINT SkuStock_idSku_fkey FOREIGN KEY (idSku) REFERENCES Sku (id);
+);
+ALTER TABLE SkuStock ADD CONSTRAINT SkuStock_idSku_fkey FOREIGN KEY (idSku) REFERENCES Sku (id);
 
 CREATE TABLE SkuImages (
     id SERIAL,
     idSku INTEGER NOT NULL,
-    idProduct INTEGER,
     src VARCHAR(255),
     name VARCHAR(255),
+    link VARCHAR(255),
     createdAt TIMESTAMP DEFAULT NOW(),
     updatedAt TIMESTAMP,
     PRIMARY KEY (id)
 );
 ALTER TABLE SkuImages ADD CONSTRAINT SkuImages_idSku_fkey FOREIGN KEY (idSku) REFERENCES Sku (id);
-ALTER TABLE SkuImages ADD CONSTRAINT SkuImages_idProduct_fkey FOREIGN KEY (idProduct) REFERENCES Products (id);
 
 CREATE TABLE Customers (
     id SERIAL,
@@ -111,7 +111,6 @@ CREATE TABLE OrderItems (
     id SERIAL,
     idOrder INTEGER NOT NULL,
     idSku INTEGER NOT NULL,
-    idProduct INTEGER NOT NULL,
     quantity INTEGER NOT NULL,
     discount REAL,
     createdAt TIMESTAMP DEFAULT NOW(),
@@ -120,5 +119,4 @@ CREATE TABLE OrderItems (
 );
 ALTER TABLE OrderItems ADD CONSTRAINT OrderItems_idOrder_fkey FOREIGN KEY (idOrder) REFERENCES Orders (id);
 ALTER TABLE OrderItems ADD CONSTRAINT OrderItems_idSku_fkey FOREIGN KEY (idSku) REFERENCES Sku (id);
-ALTER TABLE OrderItems ADD CONSTRAINT OrderItems_idProduct_fkey FOREIGN KEY (idProduct) REFERENCES Products (id);
 

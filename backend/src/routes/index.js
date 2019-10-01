@@ -41,10 +41,15 @@ const adminSteps = [
     middlewares.authorization,
     middlewares.isAdmin
 ]
+
+
 router.post('/admin/login', Auth.adminLogin)
+
 router.post('/api/categories', adminSteps, Category.store)
 router.patch('/api/categories/:id', adminSteps, Category.update)
 
+router.post('/api/products', adminSteps, Product.store)
+router.put('/api/products', adminSteps, Product.update)
 
 router.post('/api/sku', adminSteps, Sku.store)
 router.patch('/api/sku/:id', adminSteps, Sku.update)
