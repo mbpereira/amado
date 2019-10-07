@@ -10,18 +10,18 @@ class ProductController {
 
         // se o parametro categoria for fornecido, busca produtos através deles
         if(!!category)
-            return Product.query().eager('sku.[images, stock]').where('idcategory', category)
+            return Product.query().eager('[sku.[images, stock], category]').where('idcategory', category)
                 .then(products => res.status(200).send(products))
                 .catch(next)
 
-        Product.query().eager('sku.[images, stock]')
+        Product.query().eager('[sku.[images, stock], category]')
             .then(products => res.status(200).send(products))
             .catch(next)
         
     }
 
     static show (req, res, next) {
-        Product.query().eager('sku.[images, stock]').findById(req.params.id)
+        Product.query().eager('[sku.[images, stock], category]').findById(req.params.id)
             .then(r => {
                 
                 if(_.isEmpty(r))

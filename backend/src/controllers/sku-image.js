@@ -4,56 +4,10 @@ const fs = require('fs')
 const { Errors: errors } = require('../errors')
 const { SkuImage } = require('../models')
 
+const { cp, rm, mkdir } = require('../helpers')
+
 const imagePath = 'images/sku'
 const resolvedImagePath = path.resolve('src', 'static', imagePath)
-
-
-const rm = (file) => new Promise((resolve, reject) => {
-
-    fs.unlink(file, (err) => {
-
-        if(err) return reject(err)
-
-        resolve()
-        
-    })
-
-})
-
-const cp = (from, to) => new Promise((resolve, reject) => {
-
-    fs.copyFile(from, to, (err) => {
-
-        // e se um arquivo com esse nome já existir?
-
-        if(err) return reject(err)
-
-        resolve()
-
-    })
-
-})
-
-const mkSkuDir = (skuId) => {
-
-    const skuImageDir = path.join(resolvedImagePath, skuId.toString())
-
-    return new Promise((resolve, reject) => {
-
-        fs.mkdir(skuImageDir, { recursive: true }, (err) => {
-
-
-            if(!err) return resolve()
-
-
-            return (err.code === 'EEXIST') ? resolve() : reject(err)
-
-
-        })
-
-    })
-
-}
 
 
 const save = (skuId, file) => {
@@ -61,10 +15,12 @@ const save = (skuId, file) => {
     if(!file.name)
         return Promise.reject({ message: "Arquivo sem nome" })
 
+    const skuImageDir = path.join(resolvedImagePath, skuId.toString())
+
     const from = file.path
     const to = path.join(resolvedImagePath, skuId.toString(), file.name)
 
-    return mkSkuDir(skuId)
+    return mkdir(skuImageDir)
         .then(() => cp(from, to))
         .then(() => rm(from))
         .then(() => ({ 

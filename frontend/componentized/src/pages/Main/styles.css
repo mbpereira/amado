@@ -1,0 +1,17 @@
+div.amado-pro-catagory {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+div.amado-pro-catagory div.single-products-catagory{
+    flex-shrink: 0;
+    min-height: 120px;
+}
+
+div.amado-pro-catagory div.single-products-catagory img{
+    object-fit: cover;
+}
+
+div.mobile-nav {
+    box-shadow: none;
+}

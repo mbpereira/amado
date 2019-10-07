@@ -4,6 +4,5 @@ module.exports = {
     Customer: require('./customer'),
     Sku: require('./sku'),
     Product: require('./product'),
-    middlewares: require('./middlewares'),
     SkuImage: require('./sku-image')
 }

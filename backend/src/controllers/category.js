@@ -1,9 +1,30 @@
+const path = require('path')
 const { Category } = require('../models')
 const { Errors } = require('../errors')
 const _ = require('lodash')
 
-class CategoryController {
+const { mkdir, cp, rm } = require('../helpers')
 
+const categoryPath = 'images/categories'
+const solvedCategoryPath = path.resolve('src', 'static', categoryPath)
+
+const saveThumbnail = (thumbnail) => {
+    
+    const file = Array.isArray(thumbnail) ? thumbnail[0] : thumbnail
+
+    const from = file.path
+    const to = path.join(solvedCategoryPath, file.name)
+
+    return mkdir(solvedCategoryPath)
+        .then(() => cp(from, to))
+        .then(() => rm(from))
+        .then(() => ({
+            thumbnail: `/images/categories/${file.name}`
+        }))
+
+}
+
+class CategoryController {
 
     static index (req, res, next) {
         // em caso de sucesso, devolver os dados retornados
@@ -28,10 +49,20 @@ class CategoryController {
     }
 
     static store (req, res, next) {
-        Category.query().insert(req.body)
-            .returning('*')
-            .then(r => res.status(201).send(r))
+
+        if(!req.files || !req.files.thumbnail)
+            return next(Errors.BadRequest("É obrigatório enviar uma imagem"))
+
+        if(!req.fields)
+            return next(Errors.BadRequest("Você precisa enviar os parâmetros"))
+
+        const { name, description } = req.fields
+
+        saveThumbnail(req.files.thumbnail)
+            .then(thumbnail => Category.query().insert({ name, description, ...thumbnail }).returning('*'))
+            .then(createdCategory => res.status(201).send(createdCategory))
             .catch(next)
+
     }
 
     static destroy (req, res, next) {

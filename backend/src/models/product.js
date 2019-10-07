@@ -1,6 +1,4 @@
 const Model = require('./model')
-const Category = require('./category')
-const Sku = require('./sku')
 
 class Product extends Model {
 
@@ -9,7 +7,9 @@ class Product extends Model {
     }
 
     static get relationMappings() {
-
+        const Category = require('./category')
+        const Sku = require('./sku')
+        
         return {
 
             category: {

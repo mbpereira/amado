@@ -1,6 +1,6 @@
 const express = require('express')
 const bodyParser = require('body-parser')
-const { Errors, Handler: getHttpError } = require('./errors')
+const { handler: getHttpError } = require('./errors')
 const path = require('path')
 
 // ================================
@@ -17,7 +17,7 @@ const app = express()
 
 app.use(function(req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, x-access-token");
+    res.header("Access-Control-Allow-Headers", "*");
     next();
 });
 
@@ -47,4 +47,4 @@ app.use((err, req, res, next) => {
 })
 
 
-app.listen(3000)
+app.listen(5000)
