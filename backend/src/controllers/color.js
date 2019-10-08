@@ -1,4 +1,5 @@
-const { Sku } = require('../models')
+const { Color } = require('../models')
+const { Errors: errors } = require('../errors')
 
 
 const createDownloadLink = (sku) => sku.images.map(image => image.downloadLink = '/download' + image.link)
@@ -23,41 +24,42 @@ const addDownloadLink = (skus) => {
 }
 
 const imageColumnsAllowedToShow = [
-    'id', 'idsku',
+    'id', 'id_color', 'id_product',
     'name', 'link',
-    'createdat', 'updatedat'
+    'created_at', 'updated_at'
 ]
 
-class SkuController {
+class ColorController {
 
     static index (req, res, next) {
 
-        Sku.query().eager('[images, stock]')
+        Color.query().eager('[images, stock]')
             .modifyEager('stock', builder => builder.first())
             .modifyEager('images', builder => builder.select(imageColumnsAllowedToShow))
-            .then(addDownloadLink)
-            .then(arrSku => res.status(200).send(arrSku))
+            // .then(addDownloadLink)
+            .then(arrColor => res.status(200).send(arrColor))
             .catch(next)
 
     }
 
     static show (req, res, next) {
-        Sku.query().eager('[images, stock]').findById(req.params.id)
+        Color.query().eager('[images, stock]').findById(req.params.id)
             .modifyEager('stock', builder => builder.first())
             .modifyEager('images', builder => builder.select(imageColumnsAllowedToShow))
-            .then(addDownloadLink)
-            .then(sku => res.status(200).send(sku))
+            // .then(addDownloadLink)
+            .then(sku => res.status(200).send(sku || []))
             .catch(next)
     }
 
     static store (req, res, next) {
-        Sku.query().insert(req.body).returning('*')
+        Color.query().insert(req.body).returning('*')
             .then(sku => res.status(201).send(sku))
             .catch(next)
     }
 
     static update (req, res, next) {
-        
+
+
     }
 
     static destroy (req, res, next) {}
@@ -66,4 +68,4 @@ class SkuController {
 
 
 
-module.exports = SkuController
+module.exports = ColorController

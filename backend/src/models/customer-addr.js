@@ -4,7 +4,7 @@ const Customer = require('./customer')
 class CustomerAddress extends Model {
 
     static get tableName () {
-        return 'customeraddresses'
+        return 'customer_addrs'
     }
 
     static get relationMappings () {
@@ -13,7 +13,7 @@ class CustomerAddress extends Model {
                 relation: Model.BelongsToOneRelation,
                 modelClass: Customer,
                 join: {
-                    from: 'customeraddresses.id',
+                    from: 'customer_addrs.id',
                     to: 'customers.id'
                 }
             }

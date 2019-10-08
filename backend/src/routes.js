@@ -4,8 +4,8 @@ const {
     Product, 
     Category, 
     Auth, 
-    SkuImage, 
-    Sku 
+    ProductImage, 
+    Color 
 } = require('./controllers')
 
 const middlewares = require('./middlewares')
@@ -15,7 +15,7 @@ const router = express.Router()
 
 
 // DOWNLOAD ROUTES
-router.get('/download/images/sku/:skuId/:imgName', SkuImage.download)
+router.get('/download/images/sku/:skuId/:imgName', ProductImage.download)
 
 // PUBLIC ROUTES
 router.post('/register', Auth.register)
@@ -27,8 +27,8 @@ router.get('/api/products/:id', Product.show)
 router.get('/api/categories', Category.index)
 router.get('/api/categories/:id', Category.show)
 
-router.get('/api/sku', Sku.index)
-router.get('/api/sku/:id', Sku.show)
+router.get('/api/colors', Color.index)
+router.get('/api/colors/:id', Color.show)
 
 // CUSTOMER ROUTES
 router.post('/logout', middlewares.authorization, Auth.logout)
@@ -51,12 +51,13 @@ router.patch('/api/categories/:id', adminSteps, Category.update)
 router.post('/api/products', adminSteps, Product.store)
 router.patch('/api/products', adminSteps, Product.update)
 
-router.post('/api/sku', adminSteps, Sku.store)
-router.patch('/api/sku/:id', adminSteps, Sku.update)
-router.delete('/api/sku/:id', adminSteps, Sku.destroy)
+router.post('/api/colors', adminSteps, Color.store)
+router.patch('/api/colors/:id', adminSteps, Color.update)
+router.delete('/api/colors/:id', adminSteps, Color.destroy)
 
-router.post('/api/sku-images', [...adminSteps, middlewares.multiparty], SkuImage.store)
-router.delete('/api/sku-images/:id', adminSteps, SkuImage.destroy)
+router.post('/api/product-images', [...adminSteps, middlewares.multiparty], ProductImage.store)
+router.patch('/api/product-images/:id', adminSteps, ProductImage.update)
+router.delete('/api/product-images/:id', adminSteps, ProductImage.destroy)
 
 
 module.exports = router

@@ -1,5 +1,4 @@
 const Model = require('./model')
-const Product = require('./product')
 
 class Category extends Model {
 
@@ -8,13 +7,16 @@ class Category extends Model {
     }
 
     static get relationMappings () {
+
+        const Product = require('./product')
+
         return {
             products: {
                 relation: Model.HasManyRelation,
                 modelClass: Product,
                 join: {
                     from: 'categories.id',
-                    to: 'products.idcategory'
+                    to: 'products.id_category'
                 }
             }
         }

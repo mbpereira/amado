@@ -7,8 +7,10 @@ class Product extends Model {
     }
 
     static get relationMappings() {
+
         const Category = require('./category')
-        const Sku = require('./sku')
+        const Color = require('./color')
+        const ProductImage = require('./product-image')
         
         return {
 
@@ -16,17 +18,26 @@ class Product extends Model {
                 relation: Model.BelongsToOneRelation,
                 modelClass: Category,
                 join: {
-                    from: 'products.idcategory',
+                    from: 'products.id_category',
                     to: 'categories.id'
                 }
             },
 
-            sku: {
+            colors: {
                 relation: Model.HasManyRelation,
-                modelClass: Sku,
+                modelClass: Color,
                 join: {
                     from: 'products.id',
-                    to: 'sku.idproduct'
+                    to: 'colors.id_product'
+                }
+            },
+
+            previews: {
+                relation: Model.HasManyRelation,
+                modelClass: ProductImage,
+                join: {
+                    from: 'products.id',
+                    to: 'product_images.id_product'
                 }
             }
             

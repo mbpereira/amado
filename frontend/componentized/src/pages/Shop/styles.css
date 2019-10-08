@@ -1,0 +1,21 @@
+.hover-img {
+    object-fit: cover!important;
+    height: 100%!important;
+}
+
+.hover-content {
+    background: #242424!important;
+    padding: 20px;
+    transition: linear;
+    width: 100%;
+    left: 0!important;
+    top: 0!important;
+    border-radius: 0;
+}
+.hover-content h4 {
+    color: #fff;
+}
+
+.single-products-catagory a:hover .hover-content {
+    background: transparent!important;
+}

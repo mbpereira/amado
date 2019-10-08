@@ -1,19 +1,21 @@
 const Model = require('./model')
-const Sku = require('./sku')
 
 class SkuImage extends Model {
     static get tableName () {
-        return 'skuimages'
+        return 'product_images'
     }
 
     static get relationMappings () {
+
+        const Color = require('./color')
+
         return {
             sku: {
                 relation: Model.BelongsToOneRelation,
-                modelClass: Sku,
+                modelClass: Color,
                 join: {
-                    from: 'skuimages.idsku',
-                    to: 'sku.id'
+                    from: 'product_images.id_color',
+                    to: 'colors.id'
                 }
             }
         }

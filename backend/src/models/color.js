@@ -1,42 +1,44 @@
 const Model = require('./model')
-const Product = require('./product')
-const SkuImage = require('./sku-image')
-const SkuStock = require('./sku-stock')
 
-class Sku extends Model {
+class Color extends Model {
 
     static get tableName () {
-        return 'sku'
+        return 'colors'
     }
     
     static get relationMappings () {
+
+        const Product = require('./product')
+        const ProductImage = require('./product-image')
+        const Stock = require('./stock')
+
         return {
             product: {
                 relation: Model.BelongsToOneRelation,
                 modelClass: Product,
                 join: {
-                    from: 'sku.idproduct',
+                    from: 'colors.id_product',
                     to: 'products.id'
                 }
             },
             images: {
                 relation: Model.HasManyRelation,
-                modelClass: SkuImage,
+                modelClass: ProductImage,
                 join: {
-                    from: 'sku.id',
-                    to: 'skuimages.idsku'
+                    from: 'colors.id',
+                    to: 'product_images.id_color'
                 }
             },
             stock: {
                 relation: Model.HasManyRelation,
-                modelClass: SkuStock,
+                modelClass: Stock,
                 join: {
-                    from: 'sku.id',
-                    to: 'skustock.idsku'
+                    from: 'colors.id',
+                    to: 'stocks.id_color'
                 }
             }
         }
     }
 }
 
-module.exports = Sku
+module.exports = Color

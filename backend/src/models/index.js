@@ -1,12 +1,12 @@
 module.exports = {
     Model: require('./model'),
     Customer: require('./customer'),
-    CustomerAddress: require('./customer-address'),
+    CustomerAddress: require('./customer-addr'),
     Category: require('./category'),
     Product: require('./product'),
-    Sku: require('./sku'),
-    SkuStock: require('./sku'),
-    SkuImage: require('./sku-image'),
+    Color: require('./color'),
+    Stock: require('./stock'),
+    ProductImage: require('./product-image'),
     Order: require('./order'),
     OrderItem: require('./order-item'),
     User: require('./user')
