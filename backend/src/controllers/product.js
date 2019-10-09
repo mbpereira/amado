@@ -15,7 +15,7 @@ class ProductController {
                 .catch(next)
 
         Product.query().eager('[colors.[images, stock], category, previews]')
-            .modifyEager('previews', builder => builder.limit(2))
+            // .modifyEager('previews', builder => builder.limit(2))
             .modifyEager('colors.[stock]', builder => {
                 return builder
                     .select(raw('distinct on (option) option'), '*')

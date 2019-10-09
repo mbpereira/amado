@@ -1,10 +1,15 @@
 import React, { useEffect, useState } from 'react'
+
 import SingleProductWrapper from '../../components/SingleProductWrapper'
 import ShopPagination from '../../components/ShopPagination'
 import ShopFilter from '../../components/ShopFilter'
 import ShopSidebarArea from '../../components/ShopSidebarArea'
+
 import api from '../../api'
+
 import './styles.css'
+
+
 export default function Shop({ location }){
 
     const params = new URLSearchParams(location.search)

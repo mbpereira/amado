@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 import { context } from '../api'
 
 export default function SingleProductWrapper(props){
@@ -20,9 +21,9 @@ export default function SingleProductWrapper(props){
                     <div className="product-meta-data">
                         <div className="line"></div>
                         <p className="product-price">$ {product.priceBase}</p>
-                        <a href="product-details.html">
+                        <Link to={`/products/${product.id}`}  href="product-details.html">
                             <h6>{product.name}</h6>
-                        </a>
+                        </Link>
                     </div>
                     <div className="ratings-cart text-right">
                         <div className="ratings">

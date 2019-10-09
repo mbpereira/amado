@@ -1,0 +1,48 @@
+.colors button {
+    border: 0;
+    background: #ffffff;
+    cursor: pointer;
+    padding: 5px;
+    border: #444;
+    width: 20px;
+    border-radius: 20px;
+    margin: 0 2px;
+    height: 20px;
+}
+
+.cart-btn p {
+    padding-left: 0;
+}
+
+.quantity, .options {
+    width: 200px!important;
+}
+
+.quantity {
+    border: .5px solid #ced4da;
+    align-items: center;
+    border-radius: 5px
+}
+
+.quantity label {
+    color: #444;
+    padding-left: 10px;
+    margin: 0;
+}
+
+.quantity input {
+    flex: 1;
+    margin: 2px;
+}
+
+.single_product_thumb .carousel img {
+    max-height: 350px;
+    object-fit: cover;
+}
+
+.options select {
+    width: 100%;
+    padding: 10px;
+    border: 0;
+    color: #242424;
+}
