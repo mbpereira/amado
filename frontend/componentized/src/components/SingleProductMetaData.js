@@ -36,7 +36,7 @@ export default function SingleProductMetaData(props) {
             </div>
             <div className="options">
                 <select onChange={(e) => props.onStockChange(e.target.value)}>
-                    <option disabled selected>Tamanho</option>
+                    <option>Tamanho</option>
                     {props.stocks.map((stock) => (
                         <option key={stock.id} value={stock.id}>{stock.option}</option>
                     ))}

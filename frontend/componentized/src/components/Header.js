@@ -1,6 +1,8 @@
 import React, { useState } from 'react'
 import Search from './Search'
 
+import logo from '../assets/img/core-img/logo.png'
+
 export default function Header() {
 
     const [searchIsOpen, setSearchIsOpen] = useState(false)
@@ -22,7 +24,7 @@ export default function Header() {
 
             <div className="mobile-nav">
                 <div className="amado-navbar-brand">
-                    <a href="index.html"><img src="img/core-img/logo.png" alt="" /></a>
+                    <a href="index.html"><img src={logo} alt="" /></a>
                 </div>
                 <button onClick={handleMobileMenu} className="amado-navbar-toggler">
                     <span></span><span></span><span></span>
@@ -36,7 +38,7 @@ export default function Header() {
                 </button>
 
                 <div className="logo">
-                    <a href="/"><img src="img/core-img/logo.png" alt="" /></a>
+                    <a href="/"><img src={logo} alt="" /></a>
                 </div>
 
                 <nav className="amado-nav">
