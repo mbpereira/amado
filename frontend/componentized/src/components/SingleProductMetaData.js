@@ -42,12 +42,21 @@ export default function SingleProductMetaData(props) {
                     ))}
                 </select>
             </div>
-            <form className="cart clearfix" method="post">
+            <form onSubmit={props.onAdd} className="cart clearfix" method="post">
                 <div className="quantity d-flex mb-50">
                     <label htmlFor="qty">Qty</label>
-                    <input id="qty" type="number" className="qty-text" id="qty" name="quantity" />
+                    <input 
+                        id="qty" 
+                        type="number" 
+                        className="qty-text" 
+                        name="quantity" 
+                        onChange={(e) => props.onChangeQty(e.target.value)} />
                 </div>
-                <button type="submit" name="addtocart" value="5" className="btn amado-btn">Add to cart</button>
+                <button 
+                    type="submit" 
+                    name="addtocart" 
+                    value="5" 
+                    className="btn amado-btn">Add to cart</button>
             </form>
 
         </>
