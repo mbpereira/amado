@@ -709,7 +709,7 @@ ALTER TABLE ONLY public.order_items
 --
 
 ALTER TABLE ONLY public.order_items
-    ADD CONSTRAINT order_items_id_stock_fkey FOREIGN KEY (id_stock) REFERENCES public.colors(id);
+    ADD CONSTRAINT order_items_id_stock_fkey FOREIGN KEY (id_stock) REFERENCES public.stocks(id);
 
 
 --

@@ -32,6 +32,7 @@ export default function ProductDetail({ match }) {
 
         const color = product.colors[0]
 
+        // quando o produto for carregado, definir uma variante de cor padrão para exibição
         if(color && color.images && color.images.length)
             setColorId(color.images[0].id_color)
 
@@ -39,6 +40,8 @@ export default function ProductDetail({ match }) {
 
     useEffect(() => {
 
+        // quando a cor "padrão" for definida, carregamos as opções de "tamanhos" para essas cores
+        // cada opção de tamanho representa um estoque especifico para essa variante
         const color = product.colors.find(color => color.id == colorId)
 
         if(color && color.stock && color.stock.length)

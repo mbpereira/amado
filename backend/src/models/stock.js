@@ -1,7 +1,17 @@
 const Model = require('./model')
+const { raw } = require('objection')
 
-class SkuStock extends Model {
+class Stock extends Model {
 
+    static get modifiers() {
+        return {
+            distinctOptions(builder) {
+                builder.select(raw('distinct on (option) option'), '*')
+                    .where('on_stock', '!=', 0)
+                    .orderBy('option')
+            }
+        }
+    }
     static get tableName () {
         return 'stocks'
     }
@@ -23,4 +33,4 @@ class SkuStock extends Model {
     }
 }
 
-module.exports = SkuStock
+module.exports = Stock

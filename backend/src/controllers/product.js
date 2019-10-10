@@ -3,24 +3,21 @@ const { Product } = require('../models')
 const { Errors: errors } = require('../errors')
 const { raw } = require('objection')
 
+
 class ProductController {
+
     static index (req, res, next) {
 
         const category = req.query.idcategory
 
         // se o parametro categoria for fornecido, busca produtos através deles
-        if(!!category)
-            return Product.query().eager('[colors.[images, stock], category, previews]').where('id_category', category)
-                .then(products => res.status(200).send(products))
-                .catch(next)
+        let query = Product.query()
 
-        Product.query().eager('[colors.[images, stock], category, previews]')
-            // .modifyEager('previews', builder => builder.limit(2))
-            .modifyEager('colors.[stock]', builder => {
-                return builder
-                    .select(raw('distinct on (option) option'), '*')
-                    .where('on_stock', '!=', 0).orderBy('option')
-            })
+        if(category)
+            query = query.where('id_category', category)
+
+        query
+            .eager('[colors.[images, stock(distinctOptions)], category, images(preview) as previews]')
             .then(products => res.status(200).send(products))
             .catch(next)
         
@@ -28,7 +25,7 @@ class ProductController {
 
     static show (req, res, next) {
 
-        Product.query().eager('[colors.[images, stock], category, previews]').findById(req.params.id)
+        Product.query().eager('[colors.[images, stock], category]').findById(req.params.id)
             .then(r => {
                 if(_.isEmpty(r))
                     throw errors.NotFound("Produto nao econtrado")

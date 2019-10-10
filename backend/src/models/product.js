@@ -32,7 +32,7 @@ class Product extends Model {
                 }
             },
 
-            previews: {
+            images: {
                 relation: Model.HasManyRelation,
                 modelClass: ProductImage,
                 join: {
