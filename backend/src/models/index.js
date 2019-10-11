@@ -1,7 +1,7 @@
 module.exports = {
     Model: require('./model'),
     Customer: require('./customer'),
-    CustomerAddress: require('./customer-addr'),
+    CustomerAddr: require('./customer-addr'),
     Category: require('./category'),
     Product: require('./product'),
     Color: require('./color'),

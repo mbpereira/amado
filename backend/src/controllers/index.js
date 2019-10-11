@@ -4,5 +4,6 @@ module.exports = {
     Customer: require('./customer'),
     Color: require('./color'),
     Product: require('./product'),
-    ProductImage: require('./product-image')
+    ProductImage: require('./product-image'),
+    CustomerAddr: require('./customer-addr')
 }

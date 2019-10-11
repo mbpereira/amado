@@ -1,0 +1,13 @@
+.cart-address-section {
+    padding: 30px 20px;
+    border-radius: 10px;
+    background-color: #f5f7fa;
+}
+
+.cart-address-section .subtitle h5 {
+    font-size: 18px;
+}
+
+.actions {
+    margin: 30px 0;
+}

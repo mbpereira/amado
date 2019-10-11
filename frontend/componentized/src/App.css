@@ -1,4 +1,33 @@
+.custom-border-primary {
+    border: .5px solid #fbb808!important;
+}
 
+.border-light {
+    border: .5px solid #dee2e6!important;
+}
+
+.btn {
+    outline: 0;
+    border: none!important;
+}
+
+.custom-btn-primary {
+    background-color: #fbb808;
+    color: #444;
+}
+
+.custom-btn-primary:hover{
+    background-color: #e6aa0b!important;
+}
+
+.custom-btn-primary:focus{
+    box-shadow: 0 0 0 0.2rem rgba(255,193,7,.5);
+}
+
+.modal.show {
+    display: block!important;
+    background-color: #00000091;
+}
 
 button {
     border: 0;
@@ -33,7 +62,6 @@ button {
 .header-area.mobile-open {
     left: 0;
 }
-
 
 .quantity, .options {
     width: 200px!important;
@@ -87,3 +115,15 @@ td, th {
     height: 100px;
     object-fit: cover;
 }
+
+.address-wrapper {
+    padding: 15px;
+    text-align: left;
+}
+
+.address-wrapper span {
+    font-size: .8rem;
+    color: #6b6b6b;
+    display: block;
+}
+

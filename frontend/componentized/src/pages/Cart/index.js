@@ -10,8 +10,9 @@ export default function Cart() {
     const [items, setItems] = useState([])
     const [total, setTotal] = useState(0)
 
+    const cart = getCart()
+    
     useEffect(() => {
-        const cart = getCart()
         setItems(cart.all())
     }, [])
 
@@ -36,9 +37,14 @@ export default function Cart() {
                 ...copy[index],
                 quantity: qty
             }
-
+            
+            cart.set(copy)
             setItems(copy)
         }
+    }
+
+    function handleRemove(id) {
+
     }
 
     return (

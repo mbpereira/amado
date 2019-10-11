@@ -1,13 +1,15 @@
 const Model = require('./model')
-const Customer = require('./customer')
 
-class CustomerAddress extends Model {
+class CustomerAddr extends Model {
 
     static get tableName () {
         return 'customer_addrs'
     }
 
     static get relationMappings () {
+        
+        const Customer = require('./customer')
+
         return {
             customer: {
                 relation: Model.BelongsToOneRelation,
@@ -21,4 +23,4 @@ class CustomerAddress extends Model {
     }
 }
 
-module.exports = CustomerAddress
+module.exports = CustomerAddr

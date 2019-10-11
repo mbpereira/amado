@@ -5,7 +5,8 @@ const {
     Category, 
     Auth, 
     ProductImage, 
-    Color 
+    Color,
+    CustomerAddr
 } = require('./controllers')
 
 const middlewares = require('./middlewares')
@@ -36,6 +37,11 @@ router.delete('/unsubscribe', middlewares.authorization, Auth.unsubscribe)
 
 router.get('/api/me', middlewares.authorization, Customer.showMe)
 router.patch('/api/me', middlewares.authorization, Customer.updateMe)
+
+router.get('/api/me/addresses', middlewares.authorization, CustomerAddr.index)
+router.get('/api/me/addresses/:id', middlewares.authorization, CustomerAddr.show)
+router.post('/api/me/addresses', middlewares.authorization, CustomerAddr.store)
+router.patch('/api/me/addresses/:id', middlewares.authorization, CustomerAddr.update)
 
 // ADMIN ROUTES
 const adminSteps = [
