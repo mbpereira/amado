@@ -3,7 +3,7 @@ import Search from './Search'
 
 import logo from '../assets/img/core-img/logo.png'
 
-export default function Header() {
+export default function Header(props) {
 
     const [searchIsOpen, setSearchIsOpen] = useState(false)
     const [mobileMenuIsOpen, setMobileMenuIsOpen] = useState(false)
@@ -40,6 +40,11 @@ export default function Header() {
                 <div className="logo">
                     <a href="/"><img src={logo} alt="" /></a>
                 </div>
+
+                {props.isLogged 
+                    ? <a href="#">Minha conta</a>
+                    : <span />
+                }
 
                 <nav className="amado-nav">
                     <ul>

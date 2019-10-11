@@ -1,0 +1,9 @@
+.login-area {
+    flex: 1
+}
+
+.login-area .row {
+    max-width: 400px;
+    width: 100%;
+    margin: 0 auto;
+}

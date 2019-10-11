@@ -127,3 +127,27 @@ td, th {
     display: block;
 }
 
+.custom-form-control {
+    height: 60px;
+    border: none;
+    border-radius: 0;
+    background-color: #f5f7fa;
+    padding: 30px;
+    color: #6b6b6b;
+    font-size: 14px;
+}
+
+.section-title {
+    margin-top: 50px!important;
+}
+
+.section-title h2 {
+    margin-bottom: 50px!important;
+    font-size: 30px;
+    color: #242424;
+}
+
+.main-content-wrapper .header-area .logo {
+    margin-bottom: 50px!important;
+}
+

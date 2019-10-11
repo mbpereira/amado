@@ -19,8 +19,8 @@ const router = express.Router()
 router.get('/download/images/sku/:skuId/:imgName', ProductImage.download)
 
 // PUBLIC ROUTES
-router.post('/register', Auth.register)
-router.post('/login', Auth.login)
+router.post('/api/register', Auth.register)
+router.post('/api/login', Auth.login)
 
 router.get('/api/products', Product.index)
 router.get('/api/products/:id', Product.show)
@@ -32,8 +32,8 @@ router.get('/api/colors', Color.index)
 router.get('/api/colors/:id', Color.show)
 
 // CUSTOMER ROUTES
-router.post('/logout', middlewares.authorization, Auth.logout)
-router.delete('/unsubscribe', middlewares.authorization, Auth.unsubscribe)
+router.post('/api/logout', middlewares.authorization, Auth.logout)
+router.delete('/api/unsubscribe', middlewares.authorization, Auth.unsubscribe)
 
 router.get('/api/me', middlewares.authorization, Customer.showMe)
 router.patch('/api/me', middlewares.authorization, Customer.updateMe)

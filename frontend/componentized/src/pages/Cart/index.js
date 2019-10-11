@@ -10,7 +10,9 @@ export default function Cart() {
     const [items, setItems] = useState([])
     const [total, setTotal] = useState(0)
 
+
     const cart = getCart()
+
     
     useEffect(() => {
         setItems(cart.all())
@@ -26,6 +28,7 @@ export default function Cart() {
 
     }, [items])
 
+    
     function handleUpdateQty (id, qty) {
 
         const index = items.findIndex(item => item.id_stock == id)
