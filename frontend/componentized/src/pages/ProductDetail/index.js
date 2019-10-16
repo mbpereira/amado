@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 
 import Carousel from '../../components/Carousel'
 import SingleProductMetaData from '../../components/SingleProductMetaData'
+import Dialog from '../../components/Dialog'
 
 import api, { context } from '../../api'
 import getCart from '../../resources/cart'
@@ -11,6 +12,8 @@ import './styles.css'
 export default function ProductDetail({ match }) {
 
     const productId = match.params.id
+
+    const [dialogIsOpen, setDialogIsOpen] = useState(false)
 
     // dados iniciais
     const [product, setProduct] = useState({ colors: [], stocks: [] })
@@ -61,14 +64,14 @@ export default function ProductDetail({ match }) {
 
     function handleColorChange(colorId) {
 
-        const color = product.colors.find(color => color.id == colorId)
+        const color = product.colors.find(color => Number(color.id) === Number(colorId))
         if(color) setColor(color)
             
     }
 
     function handleStockChange(stockId) {
 
-        const stock = stocks.find(stock => stock.id == stockId)
+        const stock = stocks.find(stock => Number(stock.id) === Number(stockId))
         setStock(stock)
 
     }
@@ -83,7 +86,7 @@ export default function ProductDetail({ match }) {
 
         const id_stock =  stock.id
         const price = product.price || stock.price
-        const name  = `${product.name} ${color.name}`
+        const name  = `${product.name}: ${color.name} - ${stock.option}`
         const quantity   = qty
         const [thumbnail] = getCurrentImages()
 
@@ -97,12 +100,18 @@ export default function ProductDetail({ match }) {
             price
         })
 
-        console.log(cart.all())
+        setDialogIsOpen(true)
 
+        setTimeout(() => {
+            setDialogIsOpen(false)
+        }, 5000)
     }
 
     return (
         <div className="single-product-area section-padding-100 clearfix">
+            <Dialog type="success" isOpen={dialogIsOpen} onClose={() => setDialogIsOpen(false)}>
+                Produto adicionado ao carrinho!
+            </Dialog>
             <div className="container-fluid">
                 <div className="row">
                     <div className="col-12 col-lg-7">

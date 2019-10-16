@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const context = 'http://localhost:5000'
+const context = 'http://10.0.107.248:5000'
 
 export { context }
 export default axios.create({

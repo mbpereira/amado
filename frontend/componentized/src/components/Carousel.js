@@ -15,7 +15,7 @@ export default function Carousel(props) {
         <div id={props.id} className="carousel slide" data-ride="carousel">
             <div className="carousel-inner">
                 {props.images.map((image, index) => (
-                    <div key={index} className={`carousel-item ${index == active ? 'active' : ''}`}>
+                    <div key={index} className={`carousel-item ${index === active ? 'active' : ''}`}>
                         <a className="gallery_img" href={image}>
                             <img className="d-block w-100" src={image} alt={'image ' + index} /> 
                         </a>
@@ -25,7 +25,7 @@ export default function Carousel(props) {
             <ol className="carousel-indicators">
                 {props.images.map((image, index) => (
                     <li key={index}
-                        className={`${index == active ? 'active' : ''}`}
+                        className={`${index === active ? 'active' : ''}`}
                         // data-target={'#' + props.id}
                         data-slide-to={index} 
                         style={{backgroundImage: `url(${image})`}}

@@ -1,9 +1,10 @@
 import React from 'react'
 
 export default function ButtonPrimary(props) {
+    const { children, className, ...rest } = props
     return (
-        <button type={props.type} onClick={props.onClick} className={"btn amado-btn " + (props.className || '') }>
-            <span className="w-100">{props.children}</span>
+        <button {...rest} className={`btn amado-btn ${className}`}>
+            <span className="w-100">{children}</span>
         </button>
     )
 }

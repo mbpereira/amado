@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 
 export default function ShopSidebarArea(){
     return (
@@ -9,13 +10,7 @@ export default function ShopSidebarArea(){
 
                 <div className="catagories-menu">
                     <ul>
-                        <li className="active"><a href="#">Chairs</a></li>
-                        <li><a href="#">Beds</a></li>
-                        <li><a href="#">Accesories</a></li>
-                        <li><a href="#">Furniture</a></li>
-                        <li><a href="#">Home Deco</a></li>
-                        <li><a href="#">Dressings</a></li>
-                        <li><a href="#">Tables</a></li>
+                        <li><Link to="/products?category=1">Tenis</Link></li>
                     </ul>
                 </div>
             </div>

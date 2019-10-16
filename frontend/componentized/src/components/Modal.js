@@ -16,7 +16,7 @@ export default function Modal(props) {
                             type="button"
                             className="close" 
                             aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
+                            &times;
                         </button>
                     </div>
                     <div className="modal-body">
@@ -30,7 +30,7 @@ export default function Modal(props) {
                             Cancelar
                         </button>
                         <button 
-                            onClick={props.onSwapCommit} 
+                            onClick={props.onSave} 
                             type="button" 
                             className="btn custom-btn-primary btn-sm">
                             Alterar

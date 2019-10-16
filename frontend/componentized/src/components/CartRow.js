@@ -4,7 +4,7 @@ export default function CartItem(props){
     return (
         <tr>
             <td className="cart_product_img">
-                <a href="#"><img src={props.item.thumbnail} alt="Product" /></a>
+                <a href={`/products/${props.item.id_product}`}><img src={props.item.thumbnail} alt="Product" /></a>
             </td>
             <td className="cart_product_desc">
                 <h5>{props.item.name}</h5>
@@ -21,8 +21,19 @@ export default function CartItem(props){
                         className="qty-text" 
                         name="quantity"
                         value={props.item.quantity}
-                        onChange={(e) => props.onUpdate(props.item.id_stock, e.target.value)} />
+                        data-stock={props.item.id_stock}
+                        onChange={props.onUpdate} />
                 </div>
+            </td>
+            <td>
+                <button 
+                    type="button"
+                    className="close" 
+                    aria-label="Close"
+                    data-stock={props.item.id_stock} 
+                    onClick={props.onRemove} >
+                    &times;
+                </button>
             </td>
         </tr>
     )

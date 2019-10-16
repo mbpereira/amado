@@ -6,7 +6,8 @@ const {
     Auth, 
     ProductImage, 
     Color,
-    CustomerAddr
+    CustomerAddr,
+    Order
 } = require('./controllers')
 
 const middlewares = require('./middlewares')
@@ -38,10 +39,22 @@ router.delete('/api/unsubscribe', middlewares.authorization, Auth.unsubscribe)
 router.get('/api/me', middlewares.authorization, Customer.showMe)
 router.patch('/api/me', middlewares.authorization, Customer.updateMe)
 
-router.get('/api/me/addresses', middlewares.authorization, CustomerAddr.index)
-router.get('/api/me/addresses/:id', middlewares.authorization, CustomerAddr.show)
-router.post('/api/me/addresses', middlewares.authorization, CustomerAddr.store)
-router.patch('/api/me/addresses/:id', middlewares.authorization, CustomerAddr.update)
+router.get('/api/addresses', middlewares.authorization, CustomerAddr.index)
+router.get('/api/addresses/:id', middlewares.authorization, CustomerAddr.show)
+router.post('/api/addresses', middlewares.authorization, CustomerAddr.store)
+router.patch('/api/addresses/:id', middlewares.authorization, CustomerAddr.update)
+
+router.get('/api/orders', middlewares.authorization, Order.index)
+router.get('/api/orders/:id', middlewares.authorization, Order.show)
+router.post('/api/orders', middlewares.authorization, Order.store)
+router.post('/api/orders/:order_id/cancel', middlewares.authorization, Order.cancel)
+
+
+// o usuário só pode realizar operações com seus próprios pedidos
+// router.get('/orders/:order_id/items')
+// router.get('/orders/:order_id/items/:item_id')
+// router.post('/orders/:order_id/items')
+// router.detele('/orders/:order_id/items/:item_id')
 
 // ADMIN ROUTES
 const adminSteps = [

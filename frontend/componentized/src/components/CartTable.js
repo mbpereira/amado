@@ -1,7 +1,5 @@
 import React from 'react'
 
-import CartRow from './CartRow'
-
 export default function CartTable(props){
 
     return (

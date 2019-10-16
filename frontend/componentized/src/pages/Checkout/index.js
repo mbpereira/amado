@@ -2,7 +2,12 @@ import React, { useState, useEffect } from 'react'
 import Modal from '../../components/Modal'
 import AddressWrapper from '../../components/AddressWrapper'
 
+import api from '../../api'
+import Session from '../../resources/session'
+import getCart from '../../resources/cart'
+
 import './styles.css'
+import ButtonPrimary from '../../components/ButtonPrimary'
 
 function AddressesList(props) {
     const addresses = props.addresses
@@ -10,7 +15,7 @@ function AddressesList(props) {
         <ul>
             {addresses.map(address => (
                 <li key={address.id}>
-                    <button className="custom-border-primary w-100" onClick={() => props.onSwapChoose(address.id)}>
+                    <button className="custom-outline-primary w-100" onClick={() => props.onSwapChoose(address.id)}>
                         <AddressWrapper address={address} />
                     </button>
                 </li>
@@ -18,29 +23,71 @@ function AddressesList(props) {
         </ul>
     )
 }
-export default function Checkout() {
+export default function Checkout({ history }) {
 
     const [modalOpen, setModalOpen] = useState(false)
-    const [editMode, setEditMode] = useState(false)
 
     const [addresses, setAddresses] = useState([])
-    const [address, setAddress] = useState(null)
+    const [address, setAddress] = useState({})
 
     const [tempAddress, setTempAddress] = useState(-1)
 
+    const cart = getCart()
 
     useEffect(() => {
         // carrega os enderecos disponíveis desse cliente
         // seleciona o endereco padrao para entrega
+        loadAddresses()
     }, [])
 
+    useEffect(() => {
+        // para garantir que o registro foi realmente atualizado,
+        // depois que os endereços são recarregados, nós definimos 
+        // o endereço selecionado com base no id daquele que foi atualizado
+        if(!address.id) {
+            setAddress(addresses[0] || {})
+            return
+        }
+           
+        setAddress(addresses.find(addr => addr.id === address.id))
+
+    }, [addresses])
+
+
+    function loadAddresses() {
+        return api.get('/addresses', {
+            headers: { 'x-access-token': Session.token }
+        })
+        .then(res => setAddresses(res.data))
+    }
 
     // habilita o endereco atualmente selecionado para edição
-    function handleEditRequest() {}
+    function handleEditRequest() {
+        const inputs = document.querySelectorAll('#address-form input')
+        const submitUpdate = document.querySelector('#submit-update')
+
+        inputs.forEach(input => input.removeAttribute('disabled'))
+        submitUpdate.classList.remove('d-none')
+    }
 
     // atualiza o registro atualmente selecionado
-    function onAddressUpdate(e) {
+    function handleAddressUpdate(e) {
         e.preventDefault()
+
+        const token = Session.token
+
+        api.patch(`/addresses/${address.id}`, address, {
+            headers: { 'x-access-token': token }
+        })
+        .then(res => setAddress(res.data))
+        .then(loadAddresses)
+        .catch(err => console.log("Ocorreu um erro", err))
+        
+        const inputs = document.querySelectorAll('#address-form input')
+        const submitUpdate = document.querySelector('#submit-update')
+        
+        inputs.forEach(input => input.setAttribute('disabled', 'disabled'))
+        submitUpdate.classList.add('d-none')
     }
 
 
@@ -51,27 +98,54 @@ export default function Checkout() {
 
     // cancela a troca de endereco
     function handleSwapCancel() {
-        console.log("Here")
         setTempAddress(-1)
         setModalOpen(!modalOpen)
     }
 
     // faz uma seleção temporária de endereço
-    function onSwapChoose(addressId) {}
+    function handleSwapChoose(addressId) {
+        setTempAddress(addressId)
+    }
 
     // faz a troca definitiva do endereço atual
-    function onSwapCommit() {
+    function handleSwapCommit() {
         if(tempAddress === -1)
             return
 
-        const chosenAddress = addresses.find(chosenAddress.id == tempAddress)
+        const chosenAddress = addresses.find(address => Number(address.id) === Number(tempAddress))
 
         if(!chosenAddress)
             return
 
         setAddress(chosenAddress)
         setTempAddress(-1)
+        setModalOpen(false)
 
+    }
+
+    function handleOrderSave(e) {
+        e.preventDefault()
+
+        const delivery_addr = address.id
+        const items = cart.all().map(item => ({
+            id_stock: item.id_stock,
+            quantity: item.quantity
+        }))
+
+        api.post('/orders', {
+            delivery_addr,
+            items
+        }, { 
+            headers: { 'x-access-token': Session.token }
+        })
+        .then(res => {
+            cart.clear()
+            history.push('/cart')
+        })
+        .catch(err => console.log(err))
+
+        cart.clear()
+        history.push('/cart')
     }
 
     return (
@@ -85,9 +159,9 @@ export default function Checkout() {
                                 title="Selecione um endereço para receber a compra"
                                 isOpen={modalOpen}
                                 onClose={handleSwapCancel}
-                                onSave={onSwapCommit}>
+                                onSave={handleSwapCommit}>
                                 <AddressesList 
-                                    onSwapChoose={onSwapChoose} 
+                                    onSwapChoose={handleSwapChoose} 
                                     addresses={addresses} />
                             </Modal>
 
@@ -105,45 +179,65 @@ export default function Checkout() {
                                     <button className="mx-1 badge badge-primary" onClick={handleSwapRequest} type="button">Escolher outro</button>
                                 </div>
 
-                                <form>
+                                <form id="address-form" onSubmit={handleAddressUpdate}>
+                                    <input type="hidden" defaultValue={address.id} />
                                     <div className="row">
-                                        {/* <div className="col-12 mb-3">
-                                            <select className="w-100" id="country">
-                                            <option value="usa">United States</option>
-                                            <option value="uk">United Kingdom</option>
-                                            <option value="ger">Germany</option>
-                                            <option value="fra">France</option>
-                                            <option value="ind">India</option>
-                                            <option value="aus">Australia</option>
-                                            <option value="bra">Brazil</option>
-                                            <option value="cana">Canada</option>
-                                        </select> 
-                                        </div> */}
-                                        <div className="col-12 mb-3">
-                                            <input type="text" className="form-control mb-3" id="street_address" placeholder="Address" value="" />
-                                        </div>
-                                        <div className="col-12 mb-3">
-                                            <input type="text" className="form-control" id="city" placeholder="Town" value="" />
+                                        <div className="col-md-6 mb-3">
+                                            <input disabled
+                                                type="text"
+                                                className="form-control custom-form-control" 
+                                                id="zip" placeholder="Cep" 
+                                                value={address ? address.zip : ''} 
+                                                onChange={e => setAddress({ ...address, zip: e.target.value })} />
                                         </div>
                                         <div className="col-md-6 mb-3">
-                                            <input type="text" className="form-control" id="zipCode" placeholder="Zip Code" value="" />
+                                            <input disabled
+                                                type="text"
+                                                className="form-control custom-form-control" 
+                                                id="zip" placeholder="Cep" 
+                                                value={address ? address.block : ''} 
+                                                onChange={e => setAddress({ ...address, block: e.target.value })} />
                                         </div>
-                                        <div className="col-md-6 mb-3">
-                                            <input type="number" className="form-control" id="phone_number" min="0" placeholder="Phone No" value="" />
+                                        <div className="col-8 mb-3">
+                                            <input disabled 
+                                                type="text" 
+                                                className="form-control custom-form-control" 
+                                                id="street" 
+                                                placeholder="Rua" 
+                                                value={address ? address.street : ''} 
+                                                onChange={e => setAddress({ ...address, street: e.target.value })} />
                                         </div>
-                                        <div className="col-12 mb-3">
-                                            <textarea name="comment" className="form-control w-100" id="comment" cols="30" rows="10" placeholder="Leave a comment about your order"></textarea>
+                                        <div className="col-4 mb-3">
+                                            <input disabled 
+                                                type="text" 
+                                                className="form-control custom-form-control" 
+                                                id="number" placeholder="numero" 
+                                                value={address ? address.number : ''} 
+                                                onChange={e => setAddress({ ...address, number: e.target.value})} />
                                         </div>
-
+                                        <div className="col-6 mb-3">
+                                            <input disabled 
+                                                type="text" 
+                                                className="form-control custom-form-control" 
+                                                id="city" placeholder="Cidade" 
+                                                value={address ? address.city : 'CBA'} 
+                                                onChange={e => setAddress({ ...address, city: e.target.value })} />
+                                        </div>
+                                        <div className="col-6 mb-3">
+                                            <input disabled 
+                                                type="text" 
+                                                className="form-control custom-form-control" 
+                                                id="state" placeholder="Estado" 
+                                                value={address ? address.state : 'MT'} 
+                                                onChange={e => setAddress({ ...address, state: e.target.value })} />
+                                        </div>
                                         <div className="col-12">
-                                            <div className="custom-control custom-checkbox d-block mb-2">
-                                                <input type="checkbox" className="custom-control-input" id="customCheck2" />
-                                                <label className="custom-control-label" htmlFor="customCheck2">Create an accout</label>
-                                            </div>
-                                            <div className="custom-control custom-checkbox d-block">
-                                                <input type="checkbox" className="custom-control-input" id="customCheck3" />
-                                                <label className="custom-control-label" htmlFor="customCheck3">Ship to a different address</label>
-                                            </div>
+                                            <ButtonPrimary 
+                                                id="submit-update" 
+                                                className="d-none float-right" 
+                                                type="submit">
+                                                Atualizar
+                                            </ButtonPrimary>
                                         </div>
                                     </div>
                                 </form>
@@ -155,9 +249,9 @@ export default function Checkout() {
                         <div className="cart-summary border-light">
                             <h5>Cart Total</h5>
                             <ul className="summary-table">
-                                <li><span>subtotal:</span> <span>$140.00</span></li>
+                                <li><span>subtotal:</span> <span>${cart.total()}</span></li>
                                 <li><span>delivery:</span> <span>Free</span></li>
-                                <li><span>total:</span> <span>$140.00</span></li>
+                                <li><span>total:</span> <span>${cart.total() + 0}</span></li>
                             </ul>
 
                             <div className="payment-method">
@@ -165,14 +259,14 @@ export default function Checkout() {
                                     <input type="checkbox" className="custom-control-input" id="cod" checked />
                                     <label className="custom-control-label" htmlFor="cod">Cash on Delivery</label>
                                 </div>
-                                <div className="custom-control custom-checkbox mr-sm-2">
-                                    <input type="checkbox" className="custom-control-input" id="paypal" />
-                                    <label className="custom-control-label" htmlFor="paypal">Paypal <img className="ml-15" src="img/core-img/paypal.png" alt="" /></label>
-                                </div>
                             </div>
 
                             <div className="cart-btn mt-100">
-                                <a href="#" className="btn amado-btn w-100">Finalizar pedido</a>
+                                <form onSubmit={handleOrderSave}>
+                                    <ButtonPrimary className="w-100">
+                                        Finalizar pedido
+                                    </ButtonPrimary>
+                                </form>
                             </div>
                         </div>
                     </div>

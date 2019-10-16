@@ -16,9 +16,10 @@ const app = express()
 // ================================
 
 app.use(function(req, res, next) {
-    res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Headers", "*");
-    next();
+    res.header("Access-Control-Allow-Origin", "*")
+    res.header("Access-Control-Allow-Headers", "*")
+    res.header("Access-Control-Allow-Methods", "GET, POST, PATCH, DELETE")
+    next()
 });
 
 app.use('/images', express.static(path.join(__dirname, 'static', 'images')))
@@ -37,13 +38,13 @@ app.use('/', routes)
 //errorHandler
 app.use((err, req, res, next) => {
     
-    console.error(err)
-
     const httpError = getHttpError(err)
     
+    console.error(err)
     console.error(httpError)
 
     res.status(httpError.code).send(httpError.parse())
+    
 })
 
 

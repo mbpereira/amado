@@ -1,18 +1,17 @@
 import React, { useState } from 'react'
+
 import SectionTitle from '../../components/SectionTitle'
 import ButtonPrimary from '../../components/ButtonPrimary'
 
 import api from '../../api'
-import Session from '../../resources/session'
 import './styles.css'
 
-export default function Login({ history }){
+export default function Login({ history, onLogon }){
 
     const [email, setEmail] = useState('')
     const [pass, setPass] = useState('')
 
-
-    function onSubmit(e) {
+    function handleLogon(e) {
         e.preventDefault()
 
         api.post('/login', {
@@ -20,7 +19,9 @@ export default function Login({ history }){
             pass
         })
         .then(({data}) => {
-            Session.store(data.token)
+            // atualiza o estado do componente principal para "logado",
+            // para re-rendereizar a seção do cabeçalho que indica a autenticação;
+            onLogon(data)
             history.push('/')
         })
     }
@@ -28,11 +29,11 @@ export default function Login({ history }){
     return (
         <div className="login-area section-padding-100 mx-auto">
             <div className="container-fluid">
-                <form onSubmit={onSubmit}>
+                <form onSubmit={handleLogon}>
                     <div className="row">
 
                         <SectionTitle className="px-3">
-                                Entre para continuar
+                            Entre para continuar
                         </SectionTitle>
 
                         <div className="col-12 mb-3">

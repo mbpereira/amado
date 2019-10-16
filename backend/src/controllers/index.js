@@ -5,5 +5,6 @@ module.exports = {
     Color: require('./color'),
     Product: require('./product'),
     ProductImage: require('./product-image'),
-    CustomerAddr: require('./customer-addr')
+    CustomerAddr: require('./customer-addr'),
+    Order: require('./order')
 }
