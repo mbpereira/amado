@@ -18,12 +18,12 @@ class Stock extends Model {
 
     static get relationMappings () {
 
-        const Sku = require('./color')
+        const Color = require('./color')
 
         return {
-            sku: {
+            color: {
                 relation: Model.BelongsToOneRelation,
-                modelClass: Sku,
+                modelClass: Color,
                 join: {
                     from: 'stocks.id_color',
                     to: 'colors.id'

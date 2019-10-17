@@ -1,0 +1,8 @@
+.links .nav-link {
+    padding: 10px 0!important;
+}
+
+.links .nav-link:hover {
+    color: #fbb710;
+    text-decoration: underline;
+}

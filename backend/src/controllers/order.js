@@ -3,13 +3,40 @@ const { transaction } = require('objection')
 
 class OrderController {
     static index(req, res, next) {
+        const limit = Number(req.query.limit)
         const userId = req.userId
 
-        Order.query().where('id_customer', userId)
-            .eager('[items, delivery, customer]')
+        const query = Order.query()
+        
+        if(limit && !isNaN(limit))
+            query.limit(Number(limit))
+        
+        
+        query.where('orders.id_customer', userId)
+            .eager('[items, delivery]')
+            .modifyEager('items', 
+                builder => builder
+                    .select([
+                        'order_items.*',
+                        'stocks.option',
+                        'stocks.price',
+                        'stocks.cost',
+                        'colors.id as id_color',
+                        'colors.name as color_name',
+                        'products.name as product_name',
+                        'products.id as id_product',
+                        'products.code',
+                        'products.id_category',
+                    ])
+                    .join('stocks', 'order_items.id_stock', 'stocks.id')
+                    .join('colors', 'stocks.id_color', 'colors.id')
+                    .join('products', 'colors.id_product', 'products.id')
+            )
+            .orderBy('created_at', 'DESC')
             .then(orders => res.status(200).send(orders))
             .catch(next)
     }
+
     static async store(req, res, next) {
 
         const id_customer = req.userId

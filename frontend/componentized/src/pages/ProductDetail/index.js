@@ -55,7 +55,6 @@ export default function ProductDetail({ match }) {
 
     function getCurrentImages() {
 
-        console.log(color)
         if(color && Array.isArray(color.images))
             return color.images.map(image => context + image.link)
 

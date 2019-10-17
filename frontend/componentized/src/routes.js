@@ -9,6 +9,8 @@ import Checkout from './pages/Checkout'
 import Login from './pages/Login'
 
 import Session from './resources/session'
+import Profile from './pages/Profile'
+import Addresses from './pages/Addresses'
 
 function PrivateRoute ({ component: Component, ...rest }) {
     return Session.isLogged()
@@ -27,6 +29,8 @@ export default function Routes({ onLogon }){
                 <Route path="/login" render={routeProps => <Login {...routeProps} onLogon={onLogon} />} />
 
                 <PrivateRoute path="/checkout" component={Checkout} />
+                <PrivateRoute path="/profile" component={Profile} />
+                <PrivateRoute path="/addresses" component={Addresses} />
             </Switch>
         </BrowserRouter>
     )

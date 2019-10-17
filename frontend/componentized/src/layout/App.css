@@ -203,3 +203,26 @@ td, th {
 .dialog .dialog-body p {
     font-size: 12px;
 }
+
+.card-action {
+    margin: 0 3px;
+    color: #131212;
+    font-weight: 400;
+    font-size: 12px;
+    border: 0!important;
+}
+.order-wrapper {
+    width: 100%;
+}
+.order-wrapper > .col:first-child {
+    max-width: 320px;
+}
+.order-wrapper .card-subtitle{
+    font-size: .9rem;
+}
+.order-wrapper .detail .info span{
+    font-size: .75rem;
+}
+.order-wrapper .detail .info strong{
+    font-size: .8rem;
+}
