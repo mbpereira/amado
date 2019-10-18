@@ -1,9 +1,23 @@
 .addresses {
-    max-width: 400px;
     width: 100%;
     margin: 0 auto;
+    flex: 1;
 }
 
-.addresses button.close {
+.addresses.actions {
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+}
+
+.addresses button.action {
     padding: 15px;
+    font-size: 1.5rem;
+    font-weight: 700;
+    line-height: 1;
+    color: #000;
+    text-shadow: 0 1px 0 #fff;
+    opacity: .5;
+    transform: rotate(90deg);
 }

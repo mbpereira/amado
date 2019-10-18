@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import { Link } from 'react-router-dom'
 
 import WrapperContent from '../../components/WrapperContent'
 import OrderWrapper from '../../components/OrderWrapper'
@@ -41,18 +42,19 @@ export default function Profile() {
           <h6>Informações</h6>
           <ul className="links">
               <li className="nav-item">
-                <a href="" className="nav-link">Meus dados</a></li>
-              <li className="nav-item">
-                <a href="" className="nav-link">Meus endereços</a>
+                <Link to="/profile" className="nav-link">Meus dados</Link>
               </li>
               <li className="nav-item">
-                <a href="" className="nav-link">Meus pedidos</a>
+                <Link to="/addresses" className="nav-link">Meus endereços</Link>
               </li>
               <li className="nav-item">
-                <a href="" className="nav-link">Minhas avaliações</a>
+                <Link to="/profile" className="nav-link">Meus pedidos</Link>
               </li>
               <li className="nav-item">
-                <a href="" className="nav-link">Lista de desejos</a>
+                <Link to="/profile" className="nav-link">Minhas avaliações</Link>
+              </li>
+              <li className="nav-item">
+                <Link to="/profile" className="nav-link">Lista de desejos</Link>
               </li>
           </ul>
         </div>

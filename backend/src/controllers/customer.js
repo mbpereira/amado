@@ -1,3 +1,4 @@
+const bcrypt = require('bcrypt')
 const { Customer } = require('../models')
 const { Errors: errors } = require('../errors')
 
@@ -8,13 +9,10 @@ class CustomerController {
         // id recebido através de tradução do token
         const id = Number(req.userId)
 
-        if(!id)
-            throw errors.BadRequest('O parametro id deve ser informado')
-
         Customer.query().findById(id)
             .then(user => {
-                delete user.pass
-                res.status(200).send(user)
+                const {pass, ...rest} = user
+                res.status(200).send(rest)
             })
             .catch(next)
                 
@@ -26,22 +24,39 @@ class CustomerController {
         // id recebido através de tradução do token
         const id = Number(req.userId)
 
-        if(!id)
-            throw errors.BadRequest('O parametro id é obrigatório')
-
         Customer.query().findById(id).patch(req.body).returning('*')
             .then(updated => {
-                console.log(updated)
 
                 if(!updated)
                     throw errors.GeneralError('Nao atualizado')
 
-                delete updated.pass
-                res.status(200).send(updated)
+                const {pass, ...rest} = updated
+                res.status(200).send(rest)
             })
             .catch(next)
 
 
+    }
+
+    static updateMePassword(req, res, next) {
+        const id_customer = Number(req.userId)
+        const { old_pass, new_pass } = req.body
+
+        Customer.query().findById(id_customer)
+            .then(async customer => {
+
+                if(!await bcrypt.compare(old_pass, customer.pass))
+                    throw errors.Unauthorized("Senha invalida")
+
+                return bcrypt.hash(new_pass, 13)
+                    .then(hash => customer.$query().patch({ pass: hash }).returning('*'))
+                    
+            })
+            .then(updated => {
+                const {pass, ...rest} = updated
+                res.status(200).send(rest)
+            })
+            .catch(next)
     }
 
     static destroy (req, res, next) {

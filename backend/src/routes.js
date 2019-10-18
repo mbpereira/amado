@@ -38,11 +38,13 @@ router.delete('/api/unsubscribe', middlewares.authorization, Auth.unsubscribe)
 
 router.get('/api/me', middlewares.authorization, Customer.showMe)
 router.patch('/api/me', middlewares.authorization, Customer.updateMe)
+router.patch('/api/me/password', middlewares.authorization, Customer.updateMePassword)
 
 router.get('/api/addresses', middlewares.authorization, CustomerAddr.index)
 router.get('/api/addresses/:id', middlewares.authorization, CustomerAddr.show)
 router.post('/api/addresses', middlewares.authorization, CustomerAddr.store)
 router.patch('/api/addresses/:id', middlewares.authorization, CustomerAddr.update)
+router.delete('/api/addresses/:id', middlewares.authorization, CustomerAddr.destroy)
 
 router.get('/api/orders', middlewares.authorization, Order.index)
 router.get('/api/orders/:id', middlewares.authorization, Order.show)

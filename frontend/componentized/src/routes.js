@@ -11,6 +11,7 @@ import Login from './pages/Login'
 import Session from './resources/session'
 import Profile from './pages/Profile'
 import Addresses from './pages/Addresses'
+import Me from './pages/Me'
 
 function PrivateRoute ({ component: Component, ...rest }) {
     return Session.isLogged()
@@ -31,6 +32,7 @@ export default function Routes({ onLogon }){
                 <PrivateRoute path="/checkout" component={Checkout} />
                 <PrivateRoute path="/profile" component={Profile} />
                 <PrivateRoute path="/addresses" component={Addresses} />
+                <PrivateRoute path="/me" component={Me} />
             </Switch>
         </BrowserRouter>
     )
