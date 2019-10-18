@@ -27,7 +27,7 @@ export default function Addresses(props) {
   return (
     <WrapperContent className="addresses" title="Meus endereços">
       {addresses.map(address => (
-        <div className="d-flex" key={address.id}>
+        <div className="d-flex border-light my-2 justify-content-between" key={address.id}>
           <AddressWrapper address={address} />
           <button 
             className="close" 
