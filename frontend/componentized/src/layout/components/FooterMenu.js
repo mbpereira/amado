@@ -24,19 +24,16 @@ export default function FooterMenu(){
                     <div className={`collapse navbar-collapse ${collapsed ? 'show' : ''}`}id="footerNavContent">
                         <ul className="navbar-nav ml-auto">
                             <li className="nav-item active">
-                                <a className="nav-link" href="index.html">Home</a>
+                                <a className="nav-link" href="/">Home</a>
                             </li>
                             <li className="nav-item">
-                                <a className="nav-link" href="shop.html">Shop</a>
+                                <a className="nav-link" href="/products">Shop</a>
                             </li>
                             <li className="nav-item">
-                                <a className="nav-link" href="product-details.html">Product</a>
+                                <a className="nav-link" href="/cart">Cart</a>
                             </li>
                             <li className="nav-item">
-                                <a className="nav-link" href="cart.html">Cart</a>
-                            </li>
-                            <li className="nav-item">
-                                <a className="nav-link" href="checkout.html">Checkout</a>
+                                <a className="nav-link" href="/checkout">Checkout</a>
                             </li>
                         </ul>
                     </div>
