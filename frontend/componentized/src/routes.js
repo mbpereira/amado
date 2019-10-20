@@ -13,6 +13,7 @@ import Profile from './pages/Profile'
 import Addresses from './pages/Addresses'
 import Me from './pages/Me'
 import Orders from './pages/Orders'
+import Register from './pages/Register'
 
 function PrivateRoute ({ component: Component, ...rest }) {
     return Session.isLogged()
@@ -29,6 +30,7 @@ export default function Routes({ onLogon }){
                 <Route path="/products/:id" exact component={ProductDetail} />
                 <Route path="/cart" component={Cart} />
                 <Route path="/login" render={routeProps => <Login {...routeProps} onLogon={onLogon} />} />
+                <Route path="/register" render={routeProps => <Register {...routeProps} onLogon={onLogon} /> } />
 
                 <PrivateRoute path="/checkout" component={Checkout} />
                 <PrivateRoute path="/profile" component={Profile} />

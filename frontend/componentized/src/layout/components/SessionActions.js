@@ -5,7 +5,7 @@ export default function SessionActions(props) {
   if (!sessionInfo) {
     return (
       <div className="session-actions">
-        <span>Não conectado. <a href="/login">Entrar!</a></span>
+        <span>Não conectado. <a href="/login">Entrar</a> ou <a href="/register">Cadastrar</a>!</span>
       </div>
     )
   }

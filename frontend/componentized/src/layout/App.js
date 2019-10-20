@@ -10,7 +10,7 @@ import logo from '../assets/img/core-img/logo.png'
 
 import './App.css'
 
-function App({ history }) {
+function App() {
 
   const [isLogged, setIsLogged] = useState(false)
   const [sessionInfo, setSessionInfo] = useState(null)
