@@ -42,18 +42,18 @@ export default function Profile() {
           <h6>Informações</h6>
           <ul className="links">
               <li className="nav-item">
-                <Link to="/profile" className="nav-link">Meus dados</Link>
+                <Link to="/me" className="nav-link">Meus dados</Link>
               </li>
               <li className="nav-item">
                 <Link to="/addresses" className="nav-link">Meus endereços</Link>
               </li>
               <li className="nav-item">
-                <Link to="/profile" className="nav-link">Meus pedidos</Link>
+                <Link to="/orders" className="nav-link">Meus pedidos</Link>
               </li>
-              <li className="nav-item">
+              <li className="nav-item d-none">
                 <Link to="/profile" className="nav-link">Minhas avaliações</Link>
               </li>
-              <li className="nav-item">
+              <li className="nav-item d-none">
                 <Link to="/profile" className="nav-link">Lista de desejos</Link>
               </li>
           </ul>

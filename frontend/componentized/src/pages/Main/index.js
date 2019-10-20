@@ -4,30 +4,30 @@ import api from '../../api'
 
 import './styles.css'
 
-export default function Main(){
+export default function Main() {
 
-    const [categories, setCategories] = useState([])
+  const [categories, setCategories] = useState([])
 
-    useEffect(() => {
-        loadCategories()
-    }, [])
+  useEffect(() => {
+    loadCategories()
+  }, [])
 
-    async function loadCategories () {
+  async function loadCategories() {
 
-        const { data } = await api.get('/categories')
-        setCategories(data)
+    const { data } = await api.get('/categories')
+    setCategories(data)
 
-    }
+  }
 
-    return (
-        <div className="products-catagories-area clearfix">
-            <div className="amado-pro-catagory clearfix">
+  return (
+    <div className="products-catagories-area clearfix">
+      <div className="amado-pro-catagory clearfix">
 
-                {categories.map(category => (
-                    <SingleProductsCatagory key={category.id} catagory={category} />
-                ))}
+        {categories.map(category => (
+          <SingleProductsCatagory key={category.id} catagory={category} />
+        ))}
 
-            </div>
-        </div>
-    )
+      </div>
+    </div>
+  )
 }

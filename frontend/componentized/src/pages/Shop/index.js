@@ -4,56 +4,57 @@ import SingleProductWrapper from '../../components/SingleProductWrapper'
 import ShopPagination from '../../components/ShopPagination'
 import ShopFilter from '../../components/ShopFilter'
 import ShopSidebarArea from '../../components/ShopSidebarArea'
+import WrapperContent from '../../components/WrapperContent'
 
 import api from '../../api'
 
 import './styles.css'
 
 
-export default function Shop({ location }){
+export default function Shop({ location }) {
 
-    const params = new URLSearchParams(location.search)
+  const params = new URLSearchParams(location.search)
 
-    const [products, setProducts] = useState([])
+  const [products, setProducts] = useState([])
 
-    useEffect(() => {
-        loadProducts()
-    }, [])
+  useEffect(() => {
+    loadProducts()
+  }, [])
 
-    async function loadProducts() {
+  async function loadProducts() {
 
-        const url = params.category ? `/products?category=${params.category}` : '/products'
+    const url = params.category ? `/products?category=${params.category}` : '/products'
 
-        const { data } = await api.get(url)
-        setProducts(data)
+    const { data } = await api.get(url)
+    setProducts(data)
 
-    }
+  }
 
-    return(
-        <>
+  return (
+    <>
 
-            <ShopSidebarArea />
+      <ShopSidebarArea />
 
-            <div className="amado_product_area section-padding-100">
-                <div className="container-fluid">
+      {/* <div className="amado_product_area section-padding-100">
+        <div className="container-fluid"> */}
+        <WrapperContent className="amado_product_area">
 
-                    <div className="row">
-                        <ShopFilter />
-                    </div>
+          {/* <div className="row">
+            <ShopFilter />
+          </div> */}
 
-                    <div className="row">
-                        {products.map(product => (
-                            <SingleProductWrapper key={product.id} product={product} />
-                        ))}
-                    </div>
+          <div className="row">
+            {products.map(product => (
+              <SingleProductWrapper key={product.id} product={product} />
+            ))}
+          </div>
 
-                    <div className="row">
-                        <ShopPagination />
-                    </div>
+          {/* <div className="row">
+            <ShopPagination />
+          </div> */}
 
-                </div>
-            </div>
+        </WrapperContent>
 
-        </>
-    )
+    </>
+  )
 }

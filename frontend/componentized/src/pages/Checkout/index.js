@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react'
+
 import Modal from '../../components/Modal'
 import AddressWrapper from '../../components/AddressWrapper'
+import WrapperContent from '../../components/WrapperContent'
 
 import api from '../../api'
 import Session from '../../resources/session'
@@ -146,130 +148,124 @@ export default function Checkout({ history }) {
   }
 
   return (
-    <div className="cart-table-area section-padding-100">
-      <div className="container-fluid">
-        <div className="row">
-          <div className="col-12 col-lg-8">
-            <div className="checkout_details_area mt-50 clearfix">
+    <WrapperContent title="Finalizar compra" className="cart-table-area">
+      <div className="row">
+        <div className="col-12 col-lg-8">
+          <div className="checkout_details_area clearfix">
 
-              <Modal
-                title="Selecione um endereço para receber a compra"
-                isOpen={modalOpen}
-                onClose={handleSwapCancel}
-                onSave={handleSwapCommit}>
-                <AddressesList
-                  onSwapChoose={handleSwapChoose}
-                  addresses={addresses} />
-              </Modal>
+            <Modal
+              title="Selecione um endereço para receber a compra"
+              isOpen={modalOpen}
+              onClose={handleSwapCancel}
+              onSave={handleSwapCommit}>
+              <AddressesList
+                onSwapChoose={handleSwapChoose}
+                addresses={addresses} />
+            </Modal>
 
-              <div className="cart-title">
-                <h2>Checkout</h2>
+            <div className="border-light cart-address-section">
+              <div className="cart-subtitle">
+                <h6>Endereço de entrega</h6>
               </div>
 
-              <div className="border-light cart-address-section">
-                <div className="cart-subtitle">
-                  <h6>Endereço de entrega</h6>
-                </div>
+              <div className="actions">
+                <button className="badge badge-warning" onClick={handleEditRequest} type="button">Editar</button>
+                <button className="mx-1 badge badge-primary" onClick={handleSwapRequest} type="button">Escolher outro</button>
+              </div>
 
-                <div className="actions">
-                  <button className="badge badge-warning" onClick={handleEditRequest} type="button">Editar</button>
-                  <button className="mx-1 badge badge-primary" onClick={handleSwapRequest} type="button">Escolher outro</button>
-                </div>
-
-                <form id="address-form" onSubmit={handleAddressUpdate}>
-                  <input type="hidden" defaultValue={address.id} />
-                  <div className="row">
-                    <div className="col-md-6 mb-3">
-                      <input disabled
-                        type="text"
-                        className="form-control custom-form-control"
-                        id="zip" placeholder="Cep"
-                        value={address ? address.zip : ''}
-                        onChange={e => setAddress({ ...address, zip: e.target.value })} />
-                    </div>
-                    <div className="col-md-6 mb-3">
-                      <input disabled
-                        type="text"
-                        className="form-control custom-form-control"
-                        id="zip" placeholder="Cep"
-                        value={address ? address.block : ''}
-                        onChange={e => setAddress({ ...address, block: e.target.value })} />
-                    </div>
-                    <div className="col-8 mb-3">
-                      <input disabled
-                        type="text"
-                        className="form-control custom-form-control"
-                        id="street"
-                        placeholder="Rua"
-                        value={address ? address.street : ''}
-                        onChange={e => setAddress({ ...address, street: e.target.value })} />
-                    </div>
-                    <div className="col-4 mb-3">
-                      <input disabled
-                        type="text"
-                        className="form-control custom-form-control"
-                        id="number" placeholder="numero"
-                        value={address ? address.number : ''}
-                        onChange={e => setAddress({ ...address, number: e.target.value })} />
-                    </div>
-                    <div className="col-6 mb-3">
-                      <input disabled
-                        type="text"
-                        className="form-control custom-form-control"
-                        id="city" placeholder="Cidade"
-                        value={address ? address.city : 'CBA'}
-                        onChange={e => setAddress({ ...address, city: e.target.value })} />
-                    </div>
-                    <div className="col-6 mb-3">
-                      <input disabled
-                        type="text"
-                        className="form-control custom-form-control"
-                        id="state" placeholder="Estado"
-                        value={address ? address.state : 'MT'}
-                        onChange={e => setAddress({ ...address, state: e.target.value })} />
-                    </div>
-                    <div className="col-12">
-                      <ButtonPrimary
-                        id="submit-update"
-                        className="d-none float-right"
-                        type="submit">
-                        Atualizar
-                      </ButtonPrimary>
-                    </div>
+              <form id="address-form" onSubmit={handleAddressUpdate}>
+                <input type="hidden" defaultValue={address.id} />
+                <div className="row">
+                  <div className="col-md-6 mb-3">
+                    <input disabled
+                      type="text"
+                      className="form-control custom-form-control"
+                      id="zip" placeholder="Cep"
+                      value={address ? address.zip : ''}
+                      onChange={e => setAddress({ ...address, zip: e.target.value })} />
                   </div>
-                </form>
-              </div>
-            </div>
-          </div>
-
-          <div className="col-12 col-lg-4">
-            <div className="cart-summary border-light">
-              <h5>Cart Total</h5>
-              <ul className="summary-table">
-                <li><span>subtotal:</span> <span>${cart.total()}</span></li>
-                <li><span>delivery:</span> <span>Free</span></li>
-                <li><span>total:</span> <span>${cart.total() + 0}</span></li>
-              </ul>
-
-              <div className="payment-method">
-                <div className="custom-control custom-checkbox mr-sm-2">
-                  <input type="checkbox" className="custom-control-input" id="cod" checked />
-                  <label className="custom-control-label" htmlFor="cod">Cash on Delivery</label>
+                  <div className="col-md-6 mb-3">
+                    <input disabled
+                      type="text"
+                      className="form-control custom-form-control"
+                      id="zip" placeholder="Cep"
+                      value={address ? address.block : ''}
+                      onChange={e => setAddress({ ...address, block: e.target.value })} />
+                  </div>
+                  <div className="col-8 mb-3">
+                    <input disabled
+                      type="text"
+                      className="form-control custom-form-control"
+                      id="street"
+                      placeholder="Rua"
+                      value={address ? address.street : ''}
+                      onChange={e => setAddress({ ...address, street: e.target.value })} />
+                  </div>
+                  <div className="col-4 mb-3">
+                    <input disabled
+                      type="text"
+                      className="form-control custom-form-control"
+                      id="number" placeholder="numero"
+                      value={address ? address.number : ''}
+                      onChange={e => setAddress({ ...address, number: e.target.value })} />
+                  </div>
+                  <div className="col-6 mb-3">
+                    <input disabled
+                      type="text"
+                      className="form-control custom-form-control"
+                      id="city" placeholder="Cidade"
+                      value={address ? address.city : 'CBA'}
+                      onChange={e => setAddress({ ...address, city: e.target.value })} />
+                  </div>
+                  <div className="col-6 mb-3">
+                    <input disabled
+                      type="text"
+                      className="form-control custom-form-control"
+                      id="state" placeholder="Estado"
+                      value={address ? address.state : 'MT'}
+                      onChange={e => setAddress({ ...address, state: e.target.value })} />
+                  </div>
+                  <div className="col-12">
+                    <ButtonPrimary
+                      id="submit-update"
+                      className="d-none float-right"
+                      type="submit">
+                      Atualizar
+                    </ButtonPrimary>
+                  </div>
                 </div>
-              </div>
-
-              <div className="cart-btn mt-100">
-                <form onSubmit={handleOrderSave}>
-                  <ButtonPrimary className="w-100">
-                    Finalizar pedido
-                  </ButtonPrimary>
-                </form>
-              </div>
+              </form>
             </div>
           </div>
-
         </div>
+
+        <div className="col-12 col-lg-4">
+          <div className="cart-summary my-0 border-light">
+            <h5>Cart Total</h5>
+            <ul className="summary-table">
+              <li><span>subtotal:</span> <span>${cart.total()}</span></li>
+              <li><span>delivery:</span> <span>Free</span></li>
+              <li><span>total:</span> <span>${cart.total() + 0}</span></li>
+            </ul>
+
+            <div className="payment-method">
+              <div className="custom-control custom-checkbox mr-sm-2">
+                <input type="checkbox" className="custom-control-input" id="cod" checked />
+                <label className="custom-control-label" htmlFor="cod">Cash on Delivery</label>
+              </div>
+            </div>
+
+            <div className="cart-btn mt-100">
+              <form onSubmit={handleOrderSave}>
+                <ButtonPrimary className="w-100">
+                  Finalizar pedido
+                </ButtonPrimary>
+              </form>
+            </div>
+          </div>
+        </div>
+
       </div>
-    </div>
+    </WrapperContent>
   )
 }

@@ -1,7 +1,7 @@
 import React from 'react'
 import moment from 'moment'
 
-export default function OrderWrapper({ order }) {
+export default function OrderWrapper({ order, onRateRequest }) {
 
   function getTotal() {
     let total = 0
@@ -23,13 +23,14 @@ export default function OrderWrapper({ order }) {
     <div className="card w-100 my-2">
       <div className="card-body">
         <div className="card-title">
-          <span>{order.code}</span>
+          <span className="d-block">Pedido: {order.id}</span>
+          <span className="badge badge-success font-weight-light">finalizado</span>
           <span className="float-right">R$ {getTotal()}</span>
         </div>
         <div className="card-subtitle mb-2 text-muted">
           <span>{moment(order.created_at).format('DD/MM/YYYY HH:mm:ss')}</span>
         </div>
-        <a href="#" className="card-link custom-text-primary">Avaliar</a>
+        <button type="button" data-order={order.id} className="card-action" onClick={onRateRequest}>Avaliar</button>
         <button type="button" className="card-action" onClick={handleDetail}>Detalhes</button>
         <div className="detail d-none pt-4 row border-top">
           {order.items.map(item => (
